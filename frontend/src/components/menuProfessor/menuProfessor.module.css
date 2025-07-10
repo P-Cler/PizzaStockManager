@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+h3 {
+  color: #6b4226;
+}
+
+.menu-lateral {
+    position: absolute;
+    border-radius: 30px;
+    font-family: 'Atkinson Hyperlegible', Arial, Helvetica, sans-serif;
+    font-size: 18pt;
+    color: #6b4226;
+    background-color: #FF9E42;
+    stroke-width: 3px;
+    align-items: center;
+    padding: 0;
+}

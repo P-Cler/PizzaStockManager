@@ -1,0 +1,29 @@
+.loading-container {
+  height: 100vh;
+  width: 100vw;
+  background: #FFBC1C; /* cor de fundo chapada */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-image {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 32px;
+}
+
+.loading-bar-background {
+  width: 300px;
+  height: 16px;
+  background: #FFBC1C;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  background: #226034;
+  transition: width 0.2s;
+}
