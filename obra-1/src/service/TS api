@@ -1,0 +1,96 @@
+// import { Order } from '../types/game';
+
+const API_KEY = ""; // Add your Gemini API key here
+
+export const fetchNewOrder = async (): Promise<Order> => {
+  if (!API_KEY) {
+    // Fallback orders when API key is not available - ALL CALABRESA PIZZAS
+    const fallbackOrders: Order[] = [
+      { pizzaName: "Pizza de Calabresa Especial", description: "Com muito queijo e temperos secretos", quantity: Math.floor(Math.random() * 25) + 5 },
+      { pizzaName: "Pizza de Calabresa Tradicional", description: "A clássica pizza de calabresa que todos amam", quantity: Math.floor(Math.random() * 25) + 5 },
+      { pizzaName: "Pizza de Calabresa com Cebola", description: "Calabresa suculenta com cebola caramelizada", quantity: Math.floor(Math.random() * 25) + 5 },
+      { pizzaName: "Pizza de Calabresa Dupla", description: "Dose dupla de calabresa para os famintos", quantity: Math.floor(Math.random() * 25) + 5 },
+      { pizzaName: "Pizza de Calabresa Gourmet", description: "Calabresa premium com queijo especial", quantity: Math.floor(Math.random() * 25) + 5 },
+      { pizzaName: "Pizza de Calabresa Picante", description: "Calabresa temperada com pimenta", quantity: Math.floor(Math.random() * 25) + 5 },
+      { pizzaName: "Pizza de Calabresa com Azeitona", description: "Calabresa com azeitonas pretas selecionadas", quantity: Math.floor(Math.random() * 25) + 5 },
+      { pizzaName: "Pizza de Calabresa Defumada", description: "Calabresa defumada com sabor único", quantity: Math.floor(Math.random() * 25) + 5 },
+      { pizzaName: "Pizza de Calabresa da Casa", description: "Nossa receita especial de calabresa", quantity: Math.floor(Math.random() * 25) + 5 },
+      { pizzaName: "Pizza de Calabresa Extra Queijo", description: "Calabresa com queijo derretido em abundância", quantity: Math.floor(Math.random() * 25) + 5 }
+    ];
+    return fallbackOrders[Math.floor(Math.random() * fallbackOrders.length)];
+  }
+
+  const prompt = "Gere um pedido de pizza de CALABRESA para um jogo de pizzaria. O nome da pizza deve SEMPRE incluir 'Calabresa' e ser uma variação criativa de pizza de calabresa (como 'Pizza de Calabresa Especial', 'Pizza de Calabresa com Cebola', 'Pizza de Calabresa Dupla', etc.). Crie apenas variações de pizzas de calabresa. O pedido pode ter uma pequena descrição engraçada ou apetitosa sobre a calabresa. Forneça a quantidade entre 5 e 30. Responda em formato JSON com as chaves 'pizzaName' (string), 'description' (string) e 'quantity' (number).";
+  
+  const payload = {
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "OBJECT",
+        properties: {
+          "pizzaName": { "type": "STRING" },
+          "description": { "type": "STRING" },
+          "quantity": { "type": "NUMBER" }
+        },
+        required: ["pizzaName", "description", "quantity"]
+      }
+    }
+  };
+
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    
+    if (result.candidates && result.candidates.length > 0 &&
+        result.candidates[0].content && result.candidates[0].content.parts &&
+        result.candidates[0].content.parts.length > 0) {
+      
+      const jsonText = result.candidates[0].content.parts[0].text;
+      const orderData = JSON.parse(jsonText);
+      
+      // Validate the response data and ensure it's calabresa
+      if (!orderData.pizzaName || !orderData.description || !orderData.quantity) {
+        throw new Error("Invalid order data received from API");
+      }
+      
+      // Force calabresa if API doesn't follow instructions
+      if (!orderData.pizzaName.toLowerCase().includes('calabresa')) {
+        const calabresaVariations = [
+          "Pizza de Calabresa Especial",
+          "Pizza de Calabresa Tradicional", 
+          "Pizza de Calabresa com Cebola",
+          "Pizza de Calabresa Dupla",
+          "Pizza de Calabresa Gourmet"
+        ];
+        orderData.pizzaName = calabresaVariations[Math.floor(Math.random() * calabresaVariations.length)];
+        orderData.description = "Deliciosa pizza de calabresa com ingredientes frescos";
+      }
+      
+      console.log('Generated calabresa order:', orderData);
+      return orderData;
+    } else {
+      throw new Error("Invalid API response");
+    }
+  } catch (error) {
+    console.error("Error fetching new order:", error);
+    throw error;
+  }
+};
+
+export type Order = {
+  pizzaName: string;
+  description: string;
+  quantity: number;
+};
