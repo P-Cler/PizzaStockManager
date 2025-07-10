@@ -12,21 +12,29 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Aluno {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)
     @NotBlank
     private String nome;
 
-    @Column(nullable = false, unique = true, length = 20)
+    @Column(name = "cod_matricula", nullable = false, unique = true, length = 20)
     @NotBlank
     private String codMatricula;
 
     @Column(nullable = false, unique = true, length = 120)
-    @Email @NotBlank
+    @Email
+    @NotBlank
     private String email;
 
     @Column(nullable = false)
@@ -37,7 +45,7 @@ public class Aluno {
 
     @ManyToMany
     @JoinTable(name = "aluno_turma",
-               joinColumns = @JoinColumn(name = "aluno_id"),
-               inverseJoinColumns = @JoinColumn(name = "turma_id"))
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name = "turma_id"))
     private Set<Turma> turmas = new HashSet<>();
 }
