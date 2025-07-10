@@ -1,13 +1,14 @@
-import { Routes, Route } from 'react-router-dom';
-import HomeProfessor from './pages/homeProfessor/homeProfessor';
-// import Login from './Sobre';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import CadastroAluno from './components/cadastroAluno/cadastroAluno';
+import { HomeProfessor } from './pages/homeProfessor/homeProfessor';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/home" element={<HomeProfessor />} />
-      {/* <Route path="/login" element={<Login />} /> */}
-    </Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/professor" element={<HomeProfessor />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
