@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+    background-color: #FFBC1C;
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: #6B4226 ;
+}
+.login-box{
+    background-color: #FFF4E6;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px #ffff;
+}
+
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 1rem;
+}
+
+.login-aba button{
+  flex: 1;
+  padding: 0.5rem;
+  font-weight: bold;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.login-aba .active{
+    background-color: #A0000C;
+    color: white;
+}
+
+.login-aba button:nth-child(2).active{
+    background-color: #226034;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: center;
+}
+
+input{
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.botao-login {
+  background-color: #800000;
+  color: white;
+  border: none;
+  padding: 0.6rem;
+  margin-top: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-tabs button:nth-child(2).active ~ .botao-login {
+  background-color: #007000;
+}
+
+.recuperar-senha {
+  font-size: 0.80rem;
+  text-align: right;
+  color: #555;
+  cursor: pointer;
+  text-align: center;
+}
