@@ -4,6 +4,8 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route />
+       <Route path="/" element={<Login />} />
+        <Route path="/recuperar-senha" element={<RecuperarSenha />} />
     </Routes>
   );
 }

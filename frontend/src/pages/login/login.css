@@ -1,16 +1,23 @@
 body {
     margin: 0;
-    background-color: #FFBC1C;
     font-family: 'Atkinson Hyperlegible', sans-serif;
-    color: #6B4226 ;
+    background-color: #FFBC1C;
+    color: #6B4226;
 }
+
+label{
+  font-weight: bold;
+  align-self: flex-start;
+}
+
+
+
 .login-box{
     background-color: #FFF4E6;
-    padding: 2rem;
+    padding: 3rem;
     border-radius: 10px;
     width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 8px #ffff;
+    max-width: 700px;
 }
 
 .login-container{
@@ -28,17 +35,23 @@ body {
   border: none;
   background: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 5px 0;
   transition: background-color 0.3s ease;
 }
 
-.login-aba .active{
-    background-color: #A0000C;
-    color: white;
+.aba {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
 }
 
-.login-aba button:nth-child(2).active{
-    background-color: #226034;
+.aba.active {
+  border-bottom: 2px solid #333;
+  background-color: #226034 ;
+  color: #FFF4E6;
 }
 
 form {
@@ -51,21 +64,25 @@ form {
 input{
     padding: 0.5rem;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: none;
+    width: 200px;
+    background-color: #fff;
 }
 
 .botao-login {
-  background-color: #800000;
+  background-color: #A0000C;
   color: white;
   border: none;
   padding: 0.6rem;
   margin-top: 1rem;
   border-radius: 5px;
   cursor: pointer;
+  width: 200px;
+  font-weight: bold;
 }
 
-.login-tabs button:nth-child(2).active ~ .botao-login {
-  background-color: #007000;
+.botao-login:hover {
+  background-color: #BD2915;
 }
 
 .recuperar-senha {
@@ -74,4 +91,15 @@ input{
   color: #555;
   cursor: pointer;
   text-align: center;
+}
+
+.mensagem {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #226034;
+}
+
+.voltar-login {
+  margin-top: 20px;
+  background-color: #226034;
 }
