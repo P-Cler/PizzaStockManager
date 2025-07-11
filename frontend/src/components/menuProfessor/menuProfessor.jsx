@@ -1,31 +1,54 @@
 import React from "react";
-// import styles from "./menuProfessor.module.css";
+import { Link } from "react-router-dom";
 import {
-  ChalkboardIcon,
-  PersonIcon,
-  Chartbar,
-  Bookbookmark,
-  Calendarstar,
-  BreadIcon,
-} from "@phosphor-icons/react";
+  Presentation,
+  User,
+  BarChart,
+  BookMarked,
+  CalendarDays,
+  Sandwich
+} from "lucide-react";
+import styles from "@/components/menuProfessor/menuProfessor.module.css";
 
-export function MenuLateralProfessor({ onMenuClick }) {
+export default function MenuLateralProfessor() {
   return (
-    <aside className="menuLateral">
-      <ChalkboardIcon size={40} />
-      <h3>Olá, Professor Roberto!</h3>
-      <nav>
+    <aside className={styles.menuLateral}>
+      <div className={styles.cabecalhoMenu}>
+        <Presentation size={40} />
+        <h3>Olá, Professor Roberto!</h3>
+      </div>
+      <nav className={styles.navegacao}>
         <ul>
-          <Chartbar size={30} />
-          <li onClick={() => onMenuClick("config")}>Parametrização do jogo</li>
-          <PersonIcon size={30} />
-          <li onClick={() => onMenuClick("alunos")}>Cadastro de Alunos</li>
-          <BreadIcon size={30} />
-          <li onClick={() => onMenuClick("ingredientes")}>Cadastro de Ingredientes</li>
-          <Bookbookmark size={30} />
-          <li onClick={() => onMenuClick("receita")}>Receita do Produto</li>
-          <Calendarstar size={30} />
-          <li onClick={() => onMenuClick("resultados")}>Resultados</li>
+          <li>
+            <Link to="/professor/parametrizacao" className={styles.linkMenu}>
+              <BarChart size={24} />
+              <span>Parametrização do jogo</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/professor/alunos" className={styles.linkMenu}>
+              <User size={24} />
+              <span>Cadastro de Alunos</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/professor/ingredientes" className={styles.linkMenu}>
+              <Sandwich size={24} />
+              <span>Cadastro de Ingredientes</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/professor/receita" className={styles.linkMenu}>
+              <BookMarked size={24} />
+              <span>Receita do Produto</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/professor/resultados" className={styles.linkMenu}>
+              <CalendarDays size={24} />
+              <span>Resultados</span>
+            </Link>
+          </li>
         </ul>
       </nav>
     </aside>
