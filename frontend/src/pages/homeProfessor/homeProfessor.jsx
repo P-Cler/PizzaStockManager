@@ -1,16 +1,18 @@
-// import { MenuLateral, MenuLateralProfessor } from "../../components/menuProfessor/menuProfessor";
-import styles from "./homeProfessor.module.css"
-import CadastroAluno from '../../components/cadastroAluno/cadastroAluno';
-import { useState}  from "react";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import MenuLateralProfessor from '../../components/menuProfessor/menuProfessor';
+
+import styles from "./homeProfessor.module.css";
 
 export function HomeProfessor() {
-const [modalOpen, setModalOpen] = useState(false);
-
   return (
-    <div className={styles.homeProfessor}>
-        {/* <MenuLateralProfessor /> */}
-        <button onClick={() => setModalOpen(true)}>+ Adicionar Aluno</button>
-      <CadastroAluno isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+    <div className={styles.professorContainer}>
+      <MenuLateralProfessor />
+
+      <main className={styles.content}>
+
+        <Outlet />
+      </main>
     </div>
   );
 }

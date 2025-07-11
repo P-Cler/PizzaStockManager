@@ -1,17 +1,68 @@
 @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
-h3 {
-  color: #6b4226;
+.menuLateral {
+
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+
+
+  background-color: #FF9E42;
+  border-right: 3px solid #6b4226;
+
+
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.menu-lateral {
-    position: absolute;
-    border-radius: 30px;
-    font-family: 'Atkinson Hyperlegible', Arial, Helvetica, sans-serif;
-    font-size: 18pt;
-    color: #6b4226;
-    background-color: #FF9E42;
-    stroke-width: 3px;
-    align-items: center;
-    padding: 0;
+
+.cabecalhoMenu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #6b4226;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #6b42264d;
+  margin-bottom: 20px;
+}
+
+.cabecalhoMenu h3 {
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.navegacao ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navegacao li {
+  margin-bottom: 10px;
+}
+
+.linkMenu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 15px;
+  border-radius: 10px;
+
+  color: #6b4226;
+  text-decoration: none;
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.linkMenu:hover {
+  background-color: #6b4226;
+  color: #FFFFFF;
 }
