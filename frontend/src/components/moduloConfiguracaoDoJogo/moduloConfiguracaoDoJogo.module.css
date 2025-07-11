@@ -1,11 +1,11 @@
-/* ModuloConfiguracaoJogo.css */
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
 .config-jogo-form {
   background: #ffbc1c;
   padding: 2rem;
   border-radius: 12px;
   max-width: 900px;
   margin: 0 auto;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   width: 350px;
 }
 
@@ -20,7 +20,7 @@ legend {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 2rem;
-  color: #222a36;
+  color: #6B4226;
 }
 
 .form-row {
@@ -32,20 +32,20 @@ legend {
 .form-row label {
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #222a36;
+  color: #6B4226;
 }
 
 .form-row input,
 .form-row select {
   padding: 0.75rem;
-  border: 1.5px solid #444d5c;
+  border: 1.5px solid #6B4226;
   border-radius: 6px;
   font-size: 1rem;
   background: #fffbe6;
-  color: #222a36;
+  color: #6B4226;
 }
 
 .form-row input:focus,
 .form-row select:focus {
-  outline: 2px solid #4fd1c5;
+  outline: 2px solid #198E3C;
 }
