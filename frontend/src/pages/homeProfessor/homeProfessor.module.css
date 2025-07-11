@@ -1,10 +1,3 @@
-.homeProfessor {
-  width: 100%;
-  min-width: 100vh;
-  height: auto;
-  background-color: #FFBC1C;
-}
-
 .dashboard-bg {
   min-height: 100vh;
   background: #FFBC1C;
@@ -67,9 +60,9 @@ footer button {
 
 .professorContainer {
   display: flex;
-  background-color: #f0f2f5;
+  background-color: #FFBC1C;
   min-height: 100vh;
-  width: 100%;
+  width: 100% !important;
 }
 
 .content {
