@@ -10,11 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.2.0",
     "axios": "^1.10.0",
     "framer-motion": "^12.23.3",
+=======
+    "@fontsource/atkinson-hyperlegible": "^5.2.6",
+    "@phosphor-icons/react": "^2.1.10",
+>>>>>>> 8ff2a64c3a506bc8c193bfd8a304c51c366171b9
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3"
@@ -28,6 +33,10 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+<<<<<<< HEAD
     "vite": "^7.0.3"
+=======
+    "vite": "^7.0.4"
+>>>>>>> 8ff2a64c3a506bc8c193bfd8a304c51c366171b9
   }
 }

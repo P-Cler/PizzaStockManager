@@ -1,0 +1,89 @@
+ import { useState, useEffect, useRef } from 'react';
+
+export const useTimer = (initialSeconds: number, onComplete?: () => void) => {
+  const [seconds, setSeconds] = useState(initialSeconds);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const onCompleteRef = useRef(onComplete);
+
+  // Update the callback ref when it changes
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
+  const start = () => {
+    setIsRunning(true);
+    setIsPaused(false);
+  };
+
+  const pause = () => {
+    setIsPaused(true);
+  };
+
+  const resume = () => {
+    setIsPaused(false);
+  };
+
+  const stop = () => {
+    setIsRunning(false);
+    setIsPaused(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  const reset = (newSeconds?: number) => {
+    stop();
+    setSeconds(newSeconds ?? initialSeconds);
+  };
+
+  const formatTime = (totalSeconds: number): string => {
+    const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+    const secs = (totalSeconds % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+  };
+
+  useEffect(() => {
+    if (isRunning && !isPaused) {
+      intervalRef.current = setInterval(() => {
+        setSeconds(prev => {
+          if (prev <= 1) {
+            setIsRunning(false);
+            setIsPaused(false);
+            // Use the ref to get the latest callback
+            if (onCompleteRef.current) {
+              onCompleteRef.current();
+            }
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isRunning, isPaused]);
+
+  return {
+    seconds,
+    isRunning,
+    isPaused,
+    start,
+    pause,
+    resume,
+    stop,
+    reset,
+    formatTime: () => formatTime(seconds)
+  };
+}; 
