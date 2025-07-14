@@ -16,8 +16,8 @@ export default App
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HomeProfessor } from './pages/homeProfessor/homeProfessor';
-import { ModuloConfiguracaoDoJogo } from './components/moduloConfiguracaoDoJogo/moduloConfiguracaoDoJogo';
-import CadastroAluno from './components/cadastroAluno/cadastroAluno';
+import { ModuloConfiguracaoDoJogo } from './components/compConfigJogo/compConfigJogo';
+import TabelaCadastroAluno from './components/compCadastroAluno/compCadastroAluno';
 
 const ModuloCadastroDeIngredientes = () => <h2>Página de Cadastro de Ingredientes</h2>;
 const ModuloReceitaDoProduto = ({ receitas }) => (
@@ -42,7 +42,7 @@ function App() {
                     path="configuracao"
                     element={<ModuloConfiguracaoDoJogo receitas={receitas} setReceitas={setReceitas} />}
                 />
-                <Route path="alunos" element={<CadastroAluno />} />
+                <Route path="alunos" element={<TabelaCadastroAluno />} />
                 <Route path="ingredientes" element={<ModuloCadastroDeIngredientes />} />
                 <Route
                     path="receita"

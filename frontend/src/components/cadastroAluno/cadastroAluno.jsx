@@ -1,48 +1,50 @@
-import React, { useState } from 'react';
-import styles from './cadastroAluno.module.css';
-import InputCampo from '../InputCampo/InputCampo';
+import React, { useState } from "react";
+import styles from "./cadastroAluno.module.css";
+import InputCampo from "../InputCampo/InputCampo";
 
 export default function CadastroAluno({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
-    nome: '',
-    matricula: '',
-    email: '',
-    turma: ''
+    nome: "",
+    matricula: "",
+    email: "",
+    turma: "",
   });
- const buttonStyle={
+  const ButtonStyle = {
     backgroundColor: "#226034",
-     color: "white",
-  padding: "8px",
-  border: "none",
-  borderRadius: "8px",
-  fontSize: "16px",
-  marginTop: "15px",
-  cursor: "pointer"
- }
+    color: "white",
+    padding: "8px",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "16px",
+    marginTop: "15px",
+    cursor: "pointer",
+  };
 
-  const [mensagem, setMensagem] = useState('');
+  const [mensagem, setMensagem] = useState("");
 
   function handleChange(e) {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    setMensagem('Aluno cadastrado com sucesso!');
+    setMensagem("Aluno cadastrado com sucesso!");
     setTimeout(() => {
-      setMensagem('');
+      setMensagem("");
       onClose();
-    }, 2000); 
+    }, 2000);
   }
 
   function handleClose() {
-    const confirmar = window.confirm("Tem certeza que deseja sair do cadastro?");
+    const confirmar = window.confirm(
+      "Tem certeza que deseja sair do cadastro?"
+    );
     if (confirmar) {
       onClose();
-      setMensagem('');
+      setMensagem("");
     }
   }
 
@@ -51,7 +53,9 @@ export default function CadastroAluno({ isOpen, onClose }) {
   return (
     <div className={styles.overlay} onClick={handleClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeBtn} onClick={handleClose}>X</button>
+        <button className={styles.closeBtn} onClick={handleClose}>
+          X
+        </button>
         <h2>Cadastro de aluno</h2>
         <form onSubmit={handleSubmit}>
           <InputCampo
@@ -82,7 +86,13 @@ export default function CadastroAluno({ isOpen, onClose }) {
             value={formData.turma}
             onChange={handleChange}
           />
-          <button type="submit"classname={styles.botaoSalvar} style={{ backgroundColor: "#226034"}}>Salvar</button>
+          <button
+            type="submit"
+            classname={styles.button}
+            style={ButtonStyle}
+          >
+            Salvar
+          </button>
         </form>
         {mensagem && <p className={styles.sucesso}>{mensagem}</p>}
       </div>
