@@ -34,7 +34,6 @@ export function HomeProfessor() {
         </div>
 
         <Outlet />
-
         
         <CadastroIngrediente isOpen={modalIngredienteAberto} onClose={fecharModalIngrediente} />
         <CadastroAluno isOpen={modalAlunoAberto} onClose={fecharModalAluno} />
