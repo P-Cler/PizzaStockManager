@@ -19,7 +19,11 @@
 =======
     "@fontsource/atkinson-hyperlegible": "^5.2.6",
     "@phosphor-icons/react": "^2.1.10",
+<<<<<<< HEAD
 >>>>>>> 8ff2a64c3a506bc8c193bfd8a304c51c366171b9
+=======
+    "lucide-react": "^0.525.0",
+>>>>>>> 32b1d04a0b6ca05f54ddc9a8ece885478e47f29a
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3"
