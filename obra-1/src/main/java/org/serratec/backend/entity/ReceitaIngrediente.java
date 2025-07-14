@@ -26,4 +26,47 @@ public class ReceitaIngrediente {
     private BigDecimal quantidade;
 
     private int tempoPreparo;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Receita getReceita() {
+		return receita;
+	}
+
+	public void setReceita(Receita receita) {
+		this.receita = receita;
+	}
+
+	public Ingrediente getIngrediente() {
+		return ingrediente;
+	}
+
+	public void setIngrediente(Ingrediente ingrediente) {
+		this.ingrediente = ingrediente;
+	}
+
+	public BigDecimal getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(BigDecimal quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	public int getTempoPreparo() {
+		return tempoPreparo;
+	}
+
+	public void setTempoPreparo(int tempoPreparo) {
+		this.tempoPreparo = tempoPreparo;
+	}
+    
+    
+    
 }

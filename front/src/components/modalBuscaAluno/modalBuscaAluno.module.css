@@ -1,0 +1,160 @@
+/* Fundo escuro que cobre a tela inteira */
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Conteúdo do modal */
+.modalContent {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 600px; /* Aumentei a largura para a lista */
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #555;
+}
+
+.searchForm {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.searchInput {
+  flex-grow: 1;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.confirmButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirmButton:hover {
+  background-color: #218838;
+}
+
+.confirmButton:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.errorText {
+  color: #d9534f;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* --- NOVOS ESTILOS PARA A LISTA DE ALUNOS --- */
+
+.alunoListContainer {
+  margin-top: 1rem;
+  max-height: 300px; /* Altura máxima para a lista */
+  overflow-y: auto; /* Adiciona barra de rolagem se necessário */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.alunoList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.alunoListItem {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.alunoListItem:last-child {
+  border-bottom: none;
+}
+
+.alunoListItem:hover {
+  background-color: #f0f0f0;
+}
+
+/* Estilo para o item da lista que foi selecionado */
+.alunoListItem.selected {
+  background-color: #d4eaff; /* Azul claro para indicar seleção */
+  border-left: 4px solid #007bff;
+  padding-left: calc(1rem - 4px);
+}
+
+.alunoListItem p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.alunoListItem strong {
+    font-size: 1rem;
+    color: #333;
+}
+
+/* --- FIM DOS NOVOS ESTILOS --- */
+
+.alunoResult {
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.alunoResult h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.alunoResult p {
+  margin: 0.5rem 0;
+}
+
+.confirmButton {
+  width: 100%;
+  margin-top: 1rem;
+}
