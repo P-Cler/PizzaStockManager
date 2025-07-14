@@ -1,5 +1,5 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic",
+    "java.compile.nullAnalysis.mode": "disabled",
     "prettier.bracketSameLine": true,
     "prettier.tabWidth": 1
 }
