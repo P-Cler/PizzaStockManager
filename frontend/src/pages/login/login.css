@@ -1,0 +1,105 @@
+body {
+    margin: 0;
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    background-color: #FFBC1C;
+    color: #6B4226;
+}
+
+label{
+  font-weight: bold;
+  align-self: flex-start;
+}
+
+
+
+.login-box{
+    background-color: #FFF4E6;
+    padding: 3rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 700px;
+}
+
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 1rem;
+}
+
+.login-aba button{
+  flex: 1;
+  padding: 0.5rem;
+  font-weight: bold;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 5px 0;
+  transition: background-color 0.3s ease;
+}
+
+.aba {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}
+
+.aba.active {
+  border-bottom: 2px solid #333;
+  background-color: #226034 ;
+  color: #FFF4E6;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: center;
+}
+
+input{
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    width: 200px;
+    background-color: #fff;
+}
+
+.botao-login {
+  background-color: #A0000C;
+  color: white;
+  border: none;
+  padding: 0.6rem;
+  margin-top: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 200px;
+  font-weight: bold;
+}
+
+.botao-login:hover {
+  background-color: #BD2915;
+}
+
+.recuperar-senha {
+  font-size: 0.80rem;
+  text-align: right;
+  color: #555;
+  cursor: pointer;
+  text-align: center;
+}
+
+.mensagem {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #226034;
+}
+
+.voltar-login {
+  margin-top: 20px;
+  background-color: #226034;
+}

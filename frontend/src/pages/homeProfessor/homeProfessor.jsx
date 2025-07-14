@@ -1,6 +1,6 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import MenuLateralProfessor from '../../components/menuProfessor/menuProfessor';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import MenuLateralProfessor from "../../components/menuProfessor/menuProfessor";
 
 import styles from "./homeProfessor.module.css";
 
