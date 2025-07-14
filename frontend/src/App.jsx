@@ -24,7 +24,7 @@ function App() {
         <Routes>
             <Route path="/professor" element={<HomeProfessor />}>
                 <Route
-                    path="parametrizacao"
+                    path="configuracao"
                     element={<ModuloConfiguracaoDoJogo receitas={receitas} setReceitas={setReceitas} />}
                 />
                 <Route path="alunos" element={<CadastroAluno />} />

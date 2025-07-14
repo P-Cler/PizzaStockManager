@@ -15,12 +15,12 @@ export default function MenuLateralProfessor() {
     <aside className={styles.menuLateral}>
       <div className={styles.cabecalhoMenu}>
         <Presentation size={40} />
-        <h3>Olá, Professor Carlos!</h3>
+        <h3>Olá, Professor Edson Anibal!</h3>
       </div>
       <nav className={styles.navegacao}>
         <ul>
           <li>
-            <Link to="/professor/parametrizacao" className={styles.linkMenu}>
+            <Link to="/professor/configuracao" className={styles.linkMenu}>
               <MonitorCog size={24} />
               <span>Configuração do jogo</span>
             </Link>
