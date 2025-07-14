@@ -3,6 +3,9 @@ import { Outlet } from "react-router-dom";
 import MenuLateralProfessor from "../../components/menuProfessor/menuProfessor";
 import CadastroIngrediente from "../../components/cadastroIngredientes/cadastroIngredientes";
 import CadastroAluno from "../../components/CadastroAluno/CadastroAluno";
+=======
+import CadastroAluno from "../../components/CadastroAluno/CadastroAluno"; 
+>>>>>>> 32b1d04a0b6ca05f54ddc9a8ece885478e47f29a
 
 import styles from "./homeProfessor.module.css";
 
