@@ -9,11 +9,9 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
-
 import styles from './compCadastroAluno.module.css';
 import CadastroAluno from '../CadastroAluno/CadastroAluno';
-import Table from '@mui/material/Table';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 function createData(nome, matricula, email, turma, acoes) {

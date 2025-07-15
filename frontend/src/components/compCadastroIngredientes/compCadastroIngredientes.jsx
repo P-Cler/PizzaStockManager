@@ -1,4 +1,5 @@
-import styles from './compCadastroIngredientes.modules.css'
+import CadastroIngrediente from '../cadastroIngredientes/cadastroIngredientes';
+import styles from './compCadastroIngredientes.module.css'
 import { useState } from 'react';
 
 export function ModuloCadastroIngrediente() {
