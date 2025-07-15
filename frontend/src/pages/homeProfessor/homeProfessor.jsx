@@ -3,9 +3,8 @@ import MenuLateralProfessor from "../../components/menuProfessor/menuProfessor";
 import styles from "./homeProfessor.module.css";
 import { ModuloResultados } from "../../components/compResultados/compResultados";
 import { ModuloReceitas } from "../../components/compReceitas/compReceitas";
-import { ModuloCadastroIngrediente } from "../../components/compCadastroIngredientes/compCadastroIngredientes";
+import { ModuloCadastroIngrediente } from "../../components/compCadastroIngredientes.jsx/compCadastroIngredientes";
 import ModuloCadastroAluno from "../../components/compCadastroAluno/compCadastroAluno";
-import { ModuloConfiguracaoDoJogo } from "../../components/compConfigJogo/compConfigJogo";
 
 export function HomeProfessor() {
 

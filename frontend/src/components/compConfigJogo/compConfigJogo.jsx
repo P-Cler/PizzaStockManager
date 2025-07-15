@@ -1,6 +1,6 @@
 // ModuloConfiguracaoJogo.jsx
 import React, { useState } from "react";
-import styles from "@/components/moduloConfiguracaoDoJogo/moduloConfiguracaoDoJogo.module.css";
+import styles from "@/components/compConfigJogo/compConfigJogo.module.css";
 
 export function ModuloConfiguracaoDoJogo({ receitas }) {
   const [form, setForm] = useState({
