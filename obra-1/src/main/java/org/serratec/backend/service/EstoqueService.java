@@ -1,11 +1,14 @@
 package org.serratec.backend.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.serratec.backend.DTO.EstoqueJogoResponseDTO;
 import org.serratec.backend.DTO.EstoqueRequestDTO;
 import org.serratec.backend.DTO.EstoqueResponseDTO;
 import org.serratec.backend.DTO.EstoqueUpdateRequestDTO;
@@ -64,16 +67,24 @@ public class EstoqueService {
         return new EstoqueResponseDTO(estoqueSalvo);
     }
     
-    public List<EstoqueResponseDTO> listarPorJogoId(Long jogoId){
-    	if(!jogoRepository.existsById(jogoId)) {
-    		throw new ResourceNotFoundException("Não foi encontrado nenhum estoque com o id do jogo" + jogoId);
-    	}
-    	
-    	List<EstoqueJogo> estoques = estoqueRepository.findByJogoId(jogoId);
-    	
-    	return estoques.stream()
-    			.map(EstoqueResponseDTO::new)
-    			.collect(Collectors.toList());
+    public EstoqueJogoResponseDTO listarPorJogoId(Long jogoId){
+        if(!jogoRepository.existsById(jogoId)) {
+            throw new ResourceNotFoundException("Não foi encontrado nenhum estoque com o id do jogo" + jogoId);
+        }
+        
+        Jogo jogo = jogoRepository.findById(jogoId).get();
+        
+        int producaoTotal = calcularQuantidadeProduzida(jogo);
+        
+        List<EstoqueResponseDTO> itensDeEstoqueDTO = jogo.getEstoque().stream()
+                .map(EstoqueResponseDTO::new)
+                .collect(Collectors.toList());
+
+        EstoqueJogoResponseDTO response = new EstoqueJogoResponseDTO();
+        response.setQuantidadeProduzidaTotal(producaoTotal);
+        response.setItens(itensDeEstoqueDTO);
+        
+        return response;
     }
     
     @Transactional
@@ -100,11 +111,11 @@ public class EstoqueService {
                 novoEstoque.setJogo(jogo);
                 novoEstoque.setIngrediente(ingredienteDaReceita.getIngrediente());
                 
-                novoEstoque.setEstoqueAtual(ingredienteDaReceita.getQuantidade());
-                novoEstoque.setEstoqueMinimo(BigDecimal.valueOf(10.0)); // Valor padrão
-                novoEstoque.setEstoqueMax(BigDecimal.valueOf(100.0));  // Valor padrão
-                novoEstoque.setLeadTime(2);                             // Valor padrão
-                novoEstoque.setPontoPedido(BigDecimal.valueOf(20.0)); // Valor padrão
+                novoEstoque.setEstoqueAtual(BigDecimal.valueOf(10.0));
+                novoEstoque.setEstoqueMinimo(BigDecimal.valueOf(10.0)); 
+                novoEstoque.setEstoqueMax(BigDecimal.valueOf(100.0));  
+                novoEstoque.setLeadTime(2);                             
+                novoEstoque.setPontoPedido(BigDecimal.valueOf(20.0)); 
 
                 validarValoresEstoque(novoEstoque);
                 
@@ -210,4 +221,46 @@ public class EstoqueService {
             throw new IllegalArgumentException("O estoque atual não pode ser maior que o estoque máximo.");
         }
     }
+    
+    private int calcularQuantidadeProduzida(Jogo jogo) {
+        if (jogo.getReceitas() == null || jogo.getReceitas().isEmpty()) {
+            return 0;
+        }
+
+        Receita receita = jogo.getReceitas().get(0).getReceita();
+        List<ReceitaIngrediente> ingredientesDaReceita = receita.getIngredientes();
+
+        if (ingredientesDaReceita.isEmpty()) {
+            return 0;
+        }
+
+        Map<Long, EstoqueJogo> mapaEstoque = jogo.getEstoque().stream()
+                .collect(Collectors.toMap(e -> e.getIngrediente().getId(), e -> e));
+
+        int gargaloProducao = Integer.MAX_VALUE; 
+
+        for (ReceitaIngrediente ingredienteNecessario : ingredientesDaReceita) {
+            Long idIngrediente = ingredienteNecessario.getIngrediente().getId();
+            BigDecimal quantidadeNecessaria = ingredienteNecessario.getQuantidade();
+
+            if (quantidadeNecessaria.compareTo(BigDecimal.ZERO) <= 0) {
+                continue;
+            }
+
+            EstoqueJogo itemEmEstoque = mapaEstoque.get(idIngrediente);
+
+            if (itemEmEstoque == null) {
+                return 0; 
+            }
+
+            int producaoPossivelComEsteItem = itemEmEstoque.getEstoqueAtual()
+                    .divide(quantidadeNecessaria, 0, RoundingMode.FLOOR)
+                    .intValue();
+            
+            gargaloProducao = Math.min(gargaloProducao, producaoPossivelComEsteItem);
+        }
+
+        return gargaloProducao == Integer.MAX_VALUE ? 0 : gargaloProducao;
+    }
+    
 }

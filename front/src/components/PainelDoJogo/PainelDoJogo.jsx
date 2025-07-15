@@ -7,6 +7,8 @@ import { Clock, Recycle, Trophy, Info, Hourglass } from 'lucide-react';
 import PedidosGamificados from '../Pedidos/Pedidos';
 import EstoqueGamificado from '../Estoque/Estoque';
 import Fornecedor from '../Fornecedor/Fornecedor';
+import ProducaoStatusCard from '../ProducaoStatusCard/ProducaoStatusCard';
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -134,12 +136,13 @@ export function PainelDoJogo() {
             <p className={styles.widgetValue}>{jogo.pontuacaoTotal || '0'}</p>
           </div>
         </div>
+            <ProducaoStatusCard refreshKey={refreshKey} />
       </div>
 
       <div className={styles.gameComponents}>
         <PedidosGamificados refreshKey={refreshKey} onCycleEnd={handleCycleEnd} />
-        <EstoqueGamificado refreshKey={refreshKey} />
-        <Fornecedor refreshKey={refreshKey} />
+        <EstoqueGamificado refreshKey={refreshKey} onPedidoRealizado={handleCycleEnd} />
+        <Fornecedor refreshKey={refreshKey} cicloAtual={jogo.cicloAtual} onPedidoRecebido={handleCycleEnd} />
       </div>
       
       <section className={styles.logSection}>

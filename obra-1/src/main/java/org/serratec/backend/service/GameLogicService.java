@@ -59,7 +59,7 @@ public class GameLogicService {
         novoPedido.setQuantidadePizzas(quantidade);
         novoPedido.setDataPedido(LocalDateTime.now());
         novoPedido.setStatus(StatusPedido.PENDENTE);
-
+        novoPedido.setCicloGerado(jogo.calcularCicloAtual());
         Pedido pedidoSalvo = pedidoRepository.save(novoPedido);
 
         String codigo = gerarCodigoCustomizado(pedidoSalvo);

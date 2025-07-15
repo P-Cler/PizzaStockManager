@@ -63,9 +63,40 @@ export function ModuloConfiguracaoDoJogo({ receitas }) {
   }, [jogoId]);
 
   function handleChange(e) {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const { name, value } = e.target;
+
+  setForm((prev) => ({ ...prev, [name]: value }));
+
+  atualizarCampoNoBanco(name, value);
+}
+
+async function atualizarCampoNoBanco(fieldName, value) {
+  const campoId = campoIdMap[fieldName];
+  if (!campoId) {
+    console.warn(`Mapeamento não encontrado para o campo: ${fieldName}`);
+    return;
   }
+
+  const valorEnviado = ['tempoTotal', 'numCiclos', 'maxProdutos', 'minProdutos'].includes(fieldName)
+    ? parseInt(value, 10)
+    : value;
+
+  try {
+    const response = await fetch(`${API_URL}/jogos/${jogoId}/campo/${campoId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ valor: valorEnviado }),
+    });
+
+    if (!response.ok) {
+      console.error(`Erro ao atualizar campo "${fieldName}". Status: ${response.status}`);
+    } else {
+      console.log(`Campo "${fieldName}" atualizado com sucesso no banco.`);
+    }
+  } catch (error) {
+    console.error(`Erro ao atualizar campo "${fieldName}":`, error);
+  }
+}
 
   async function handleSubmit(e) {
     e.preventDefault();

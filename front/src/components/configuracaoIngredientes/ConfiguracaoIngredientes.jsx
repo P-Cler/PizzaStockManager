@@ -33,14 +33,16 @@ export function ConfiguracaoIngredientes() {
     const fetchIngredientes = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${API_URL}/estoques/${jogoId}`);
+        const response = await fetch(`${API_URL}/estoques/por-jogo/${jogoId}`);
         if (!response.ok) {
           throw new Error('Não foi possível carregar os ingredientes do estoque.');
         }
         const data = await response.json();
         console.log(data)
-        if (Array.isArray(data)) {
-            setIngredientes(data);
+        console.log(data.itens);
+        
+        if (Array.isArray(data.itens)) {
+            setIngredientes(data.itens);
         } else {
             throw new Error('O formato da resposta da API não é o esperado.');
         }

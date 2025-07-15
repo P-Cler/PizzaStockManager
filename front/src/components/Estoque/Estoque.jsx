@@ -57,7 +57,7 @@ function ModalPedido({ isOpen, onClose, ingrediente, onFazerPedido }) {
 
 
 
-export default function EstoqueGamificado({refreshKey}) {
+export default function EstoqueGamificado({refreshKey, onPedidoRealizado}) {
     const { jogoId } = useParams();
     const [ingredientes, setIngredientes] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -70,10 +70,10 @@ export default function EstoqueGamificado({refreshKey}) {
         if (!jogoId) return;
         setLoading(true);
         try {
-            const response = await fetch(`${API_URL}/estoques/${jogoId}`);
+            const response = await fetch(`${API_URL}/estoques/por-jogo/${jogoId}`);
             if (!response.ok) throw new Error('Erro ao buscar o estoque do jogo.');
             const data = await response.json();
-            setIngredientes(data);
+            setIngredientes(data.itens);
             console.log(data);
             
         } catch (error) {
@@ -111,8 +111,8 @@ const fazerPedido = async (ingredienteId, quantidade) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                estoqueId: ingredienteSelecionado.id, // ID do estoque
-                quantidade: Number(quantidade)        // Envia como decimal
+                estoqueId: ingredienteSelecionado.id, 
+                quantidade: Number(quantidade)        
             }),
         });
 
@@ -123,7 +123,12 @@ const fazerPedido = async (ingredienteId, quantidade) => {
         const data = await response.json();
         console.log("Entrega solicitada:", data);
         alert(`Pedido de ${quantidade} unidades de ${ingredienteSelecionado?.nomeIngrediente} realizado com sucesso!`);
-        fetchEstoque(); // Atualiza o estoque após o pedido
+        fetchEstoque(); 
+
+        if(onPedidoRealizado){
+            onPedidoRealizado();
+        }
+
     } catch (error) {
         console.error("Erro ao fazer pedido:", error);
         alert("Erro ao fazer o pedido.");

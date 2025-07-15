@@ -14,6 +14,7 @@ public class EstoqueResponseDTO {
     private BigDecimal estoqueMax;
     private int leadTime;
     private BigDecimal pontoPedido;
+    
 
     public EstoqueResponseDTO(EstoqueJogo estoque) {
         this.id = estoque.getId();
@@ -103,6 +104,5 @@ public class EstoqueResponseDTO {
 	public void setPontoPedido(BigDecimal pontoPedido) {
 		this.pontoPedido = pontoPedido;
 	}
-
     
 }

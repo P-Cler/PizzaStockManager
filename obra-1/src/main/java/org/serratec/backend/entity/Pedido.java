@@ -33,6 +33,8 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "jogo_id")
     private Jogo jogo;
+    
+    private int cicloGerado;
 
 	public Long getId() {
 		return id;
@@ -90,5 +92,14 @@ public class Pedido {
 		this.jogo = jogo;
 	}
 
+	public int getCicloGerado() {
+		return cicloGerado;
+	}
+
+	public void setCicloGerado(int cicloGerado) {
+		this.cicloGerado = cicloGerado;
+	}
+
+	
     
 }

@@ -5,7 +5,7 @@ import { Truck, CheckCircle, XCircle, Package } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function Fornecedor({ refreshKey }) { 
+export default function Fornecedor({ refreshKey, cicloAtual, onPedidoRecebido }) { 
     const { jogoId } = useParams();
     const [entregas, setEntregas] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -46,6 +46,9 @@ export default function Fornecedor({ refreshKey }) {
                 throw new Error(errorData.message || `Falha ao ${action} entrega.`);
             }
             fetchEntregas(); 
+            if(onPedidoRecebido){
+                onPedidoRecebido();
+            }
         } catch (err) {
             console.error(`Erro ao ${action} entrega:`, err);
             alert(err.message);
@@ -74,6 +77,7 @@ export default function Fornecedor({ refreshKey }) {
                 {entregas.length === 0 && <p className={styles.noData}>Nenhuma entrega solicitada para este jogo.</p>}
                 {entregas.map((item) => {
                     const statusInfo = getStatusInfo(item.status);
+                    const ciclosRestantes = item.cicloDisponivel - (cicloAtual || 0);
                     return (
                         <div key={item.id} className={styles.card}>
                             <div className={styles.cardHeader}>
@@ -89,6 +93,7 @@ export default function Fornecedor({ refreshKey }) {
                                 <div>Pedido no Ciclo: <strong>{item.cicloDoPedido}</strong></div>
                                 <div>Disponível no Ciclo: <strong>{item.cicloDisponivel}</strong></div>
                                 <div>Recebido no Ciclo: <strong>{item.cicloDoRecebimento || '–'}</strong></div>
+                                <div>Ciclos Restantes: <strong>{ciclosRestantes > 0 ? ciclosRestantes : 0}</strong></div>
                             </div>
 
                             <div className={styles.cardActions}>

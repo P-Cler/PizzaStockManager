@@ -2,11 +2,12 @@ package org.serratec.backend.controller;
 
 import java.util.List;
 
+import org.serratec.backend.DTO.CampoUpdateRequestDTO;
+import org.serratec.backend.DTO.EstoqueJogoResponseDTO;
 // Removido o import não utilizado de EstoqueReceitaRequestDTO
 import org.serratec.backend.DTO.EstoqueRequestDTO;
 import org.serratec.backend.DTO.EstoqueResponseDTO;
 import org.serratec.backend.DTO.EstoqueUpdateRequestDTO;
-import org.serratec.backend.DTO.CampoUpdateRequestDTO;
 import org.serratec.backend.service.EstoqueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,10 +36,10 @@ public class EstoqueController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
     
-    @GetMapping("/{jogoId}")
-    public ResponseEntity<List<EstoqueResponseDTO>> buscarEstoquePorJogoId(@PathVariable Long jogoId){
-    	List<EstoqueResponseDTO> estoques = service.listarPorJogoId(jogoId);
-    	return ResponseEntity.ok(estoques);
+    @GetMapping("/por-jogo/{jogoId}")
+    public ResponseEntity<EstoqueJogoResponseDTO> buscarEstoquePorJogoId(@PathVariable Long jogoId){
+        EstoqueJogoResponseDTO estoques = service.listarPorJogoId(jogoId);
+        return ResponseEntity.ok(estoques);
     }
     
     @PostMapping("/jogo/{jogoId}/receita/{receitaId}")

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
 
+
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -77,6 +78,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
 
         return new ResponseEntity<>(erroResposta, HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<Object> handleDuplicate(DuplicateResourceException ex) {
+        ErroResposta erroResposta = new ErroResposta(
+        		HttpStatus.CONFLICT.value(),
+        		"Item duplicado",
+        		LocalDateTime.now(), 
+        		Collections.singletonList(ex.getMessage())
+        		
+        );
+        return new ResponseEntity<>(erroResposta, HttpStatus.CONFLICT);
     }
     
 }

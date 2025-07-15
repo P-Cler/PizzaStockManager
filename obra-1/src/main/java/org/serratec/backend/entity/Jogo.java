@@ -1,5 +1,6 @@
 package org.serratec.backend.entity;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -67,6 +68,39 @@ public class Jogo {
         if (tempoTotal > 0 && numeroCiclos > 0) {
             this.duracaoCiclos = tempoTotal / numeroCiclos;
         }
+    }
+    
+    public int calcularCicloAtual() {
+        if (this.status == null || this.status == JogoStatus.NAO_INICIADO) {
+            return 0;
+        }
+
+        if (this.status == JogoStatus.FINALIZADO) {
+            return this.numeroCiclos;
+        }
+
+        if (this.dataInicio == null) {
+            return 0;
+        }
+
+        LocalDateTime momentoReferencia = (this.status == JogoStatus.PAUSADO && this.dataPausa != null)
+                                          ? this.dataPausa
+                                          : LocalDateTime.now();
+
+        if (this.numeroCiclos == 0 || this.tempoTotal == 0) {
+            return 1; 
+        }
+
+        long duracaoCicloEmSegundos = (long) this.tempoTotal * 60 / this.numeroCiclos;
+
+        if (duracaoCicloEmSegundos <= 0) {
+            return 1;
+        }
+
+        long segundosCorridos = Duration.between(this.dataInicio, momentoReferencia).getSeconds();
+        int cicloCalculado = (int) (segundosCorridos / duracaoCicloEmSegundos) + 1;
+
+        return Math.min(cicloCalculado, this.numeroCiclos);
     }
 
     public Long getId() {

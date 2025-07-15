@@ -13,6 +13,7 @@ public class PedidoResponseDTO {
     private int quantidadePizzas;
     private StatusPedido status;
     private Long jogoId;
+    private int cicloGerado;
 
     public PedidoResponseDTO(Pedido pedido) {
         this.id = pedido.getId();
@@ -22,6 +23,7 @@ public class PedidoResponseDTO {
         this.quantidadePizzas = pedido.getQuantidadePizzas();
         this.status = pedido.getStatus();
         this.jogoId = pedido.getJogo().getId();
+        this.cicloGerado = pedido.getCicloGerado();
     }
 
 	public Long getId() {
@@ -78,6 +80,14 @@ public class PedidoResponseDTO {
 
 	public void setJogoId(Long jogoId) {
 		this.jogoId = jogoId;
+	}
+
+	public int getCicloGerado() {
+		return cicloGerado;
+	}
+
+	public void setCicloGerado(int cicloGerado) {
+		this.cicloGerado = cicloGerado;
 	}
     
     

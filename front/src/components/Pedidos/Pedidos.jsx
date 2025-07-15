@@ -1,5 +1,3 @@
-// src/components/pedidos/PedidosGamificados.jsx
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { Pause, Play } from "lucide-react";
 import { useParams } from "react-router-dom";
@@ -16,7 +14,6 @@ export default function PedidosGamificados({ refreshKey, onCycleEnd }) {
     const [isPaused, setIsPaused] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // MUDANÇA 1: Função de busca unificada e simplificada
     const fetchDados = useCallback(async () => {
         if (!jogoId) return;
         setLoading(true);
@@ -25,9 +22,12 @@ export default function PedidosGamificados({ refreshKey, onCycleEnd }) {
             if (!response.ok) throw new Error('Erro ao buscar dados do jogo.');
             const jogo = await response.json();
             
+            
+            const duracaoCicloSegundos = jogo.duracaoCiclos > 0 ? jogo.duracaoCiclos * 60 : 60; 
+
             setPedidos(jogo.pedidos || []);
             setTempoRestante(jogo.tempoRestanteCicloSegundos);
-            setCicloInfo({ duracao: jogo.duracaoCiclos * 60, cicloAtual: jogo.cicloAtual }); // Convertendo minutos para segundos
+            setCicloInfo({ duracao: duracaoCicloSegundos, cicloAtual: jogo.cicloAtual }); 
             setIsPaused(jogo.status === 'PAUSADO');
 
         } catch (error) {
@@ -37,46 +37,59 @@ export default function PedidosGamificados({ refreshKey, onCycleEnd }) {
         }
     }, [jogoId]);
 
-    // MUDANÇA 2: useEffect principal que reage à refreshKey
+    
     useEffect(() => {
         fetchDados();
     }, [fetchDados, refreshKey]);
 
-    // MUDANÇA 3: useEffect para o cronômetro, agora muito mais simples
+    
     useEffect(() => {
-        // Para o cronômetro se o tempo acabou, estiver pausado ou carregando.
         if (tempoRestante <= 0 || isPaused || loading) {
-            // Se o tempo acabou de chegar a zero, notifica o pai.
             if (tempoRestante === 0 && !loading) {
                 onCycleEnd();
             }
             return;
         }
 
-        // A cada segundo, diminui o tempo restante.
         const timerId = setInterval(() => {
             setTempoRestante(prev => prev - 1);
         }, 1000);
 
         return () => clearInterval(timerId);
-
     }, [tempoRestante, isPaused, loading, onCycleEnd]);
 
+    
     const produzirPedido = async (id) => {
         try {
-            await fetch(`${API_URL}/pedidos/${id}/produzir`, { method: 'PATCH' });
-            onCycleEnd(); // Força a atualização de tudo
+            const response = await fetch(`${API_URL}/pedidos/${id}/produzir`, { method: 'PATCH' });
+            
+            if (response.ok) {
+                alert('Pedido enviado para produção com sucesso!');
+                onCycleEnd(); 
+            } else {
+                
+                const errorData = await response.json().catch(() => ({ message: 'Não foi possível obter detalhes do erro.' }));
+                alert(`Falha ao produzir pedido: ${errorData.message || response.statusText}`);
+            }
         } catch (error) {
-            console.error("Erro ao produzir pedido:", error);
+            console.error("Erro de rede ao produzir pedido:", error);
+            alert("Erro de comunicação ao tentar produzir o pedido. Verifique sua conexão.");
         }
     };
 
     const rejeitarPedido = async (id) => {
         try {
-            await fetch(`${API_URL}/pedidos/${id}/rejeitar`, { method: 'PATCH' });
-            onCycleEnd(); // Força a atualização de tudo
+            const response = await fetch(`${API_URL}/pedidos/${id}/rejeitar`, { method: 'PATCH' });
+            
+            if (response.ok) {
+                alert('Pedido cancelado com sucesso!');
+                onCycleEnd(); 
+            } else {
+                alert('Falha ao cancelar o pedido.');
+            }
         } catch (error) {
-            console.error("Erro ao rejeitar pedido:", error);
+            console.error("Erro de rede ao rejeitar pedido:", error);
+            alert("Erro de comunicação ao tentar cancelar o pedido.");
         }
     };
 
@@ -95,37 +108,39 @@ export default function PedidosGamificados({ refreshKey, onCycleEnd }) {
         <div className={styles.container}>
             <div className={styles.headerPedidos}>
                 <h2 className={styles.titulo}>🍕 Pedidos do Ciclo {cicloInfo.cicloAtual}</h2>
-                {/* Aqui poderiam entrar os botões de pause/play se necessário */}
             </div>
             <div className={styles.grid}>
                 {pedidos.length > 0 ? pedidos.map((pedido) => (
                     <div key={pedido.id} className={styles.card}>
                         <div className={styles.cardHeader}>
-                           <h3 className={styles.cardTitle}>
+                            <h3 className={styles.cardTitle}>
                                 Pedido <span className={styles.codigoPedido}>({pedido.codigoPedido})</span>
-                           </h3>
+                            </h3>
                         </div>
                         <div className={styles.cardText}>
-                           Quantidade: <strong>{pedido.quantidadePizzas} Pizzas</strong>
+                            Quantidade: <strong>{pedido.quantidadePizzas} Pizzas</strong>
                         </div>
-                        <div className={styles.progressContainer}>
-                            <div className={styles.progressBar}>
-                                <div
-                                    className={styles.progressFill}
-                                    style={{ width: `${(tempoRestante / cicloInfo.duracao) * 100}%` }}
-                                />
-                            </div>
-                            <span className={styles.timer}>{formatarTempo(tempoRestante)}</span>
-                        </div>
-                        {pedido.status === "PENDENTE" ? (
-                            <div className={styles.buttonGroup}>
-                                <button className={styles.produzirButton} onClick={() => produzirPedido(pedido.id)}>
-                                    Produzir
-                                </button>
-                                <button className={styles.rejeitarButton} onClick={() => rejeitarPedido(pedido.id)}>
-                                    Rejeitar
-                                </button>
-                            </div>
+                        
+                        {pedido.status === "PENDENTE" && pedido.cicloGerado === cicloInfo.cicloAtual ? (
+                            <>
+                                <div className={styles.progressContainer}>
+                                    <div className={styles.progressBar}>
+                                        <div
+                                            className={styles.progressFill}
+                                            style={{ width: `${(tempoRestante / cicloInfo.duracao) * 100}%` }}
+                                        />
+                                    </div>
+                                    <span className={styles.timer}>{formatarTempo(tempoRestante)}</span>
+                                </div>
+                                <div className={styles.buttonGroup}>
+                                    <button className={styles.produzirButton} onClick={() => produzirPedido(pedido.id)}>
+                                        Produzir
+                                    </button>
+                                    <button className={styles.rejeitarButton} onClick={() => rejeitarPedido(pedido.id)}>
+                                        Rejeitar
+                                    </button>
+                                </div>
+                            </>
                         ) : (
                             <div className={`${styles.statusDisplay} ${styles[`status${pedido.status}`]}`}>
                                 Status: {pedido.status}
