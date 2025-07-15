@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import { HomeProfessor } from './pages/homeProfessor/homeProfessor';
 import { ModuloConfiguracaoDoJogo } from './components/compConfigJogo/compConfigJogo';
 import TabelaCadastroAluno from './components/compCadastroAluno/compCadastroAluno';
+import Login from './pages/login/login';
+import { LoadingPage } from './pages/loadingPage/loadingPage';
 
 const ModuloCadastroDeIngredientes = () => <h2>Página de Cadastro de Ingredientes</h2>;
 const ModuloReceitaDoProduto = ({ receitas }) => (
@@ -22,6 +24,8 @@ function App() {
 
     return (
         <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/loading" element={<LoadingPage />} />
             <Route path="/professor" element={<HomeProfessor />}>
                 <Route
                     path="configuracao"

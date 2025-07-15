@@ -1,7 +1,6 @@
 import pizzaStockManagerLogo from '../../assets/pizzaStockManagerLogo.png';
 import './loadingPage.module.css';
 import React, { useEffect, useState } from 'react';
-import './loadingPage.css';
 
 export function LoadingPage() {
   const [progress, setProgress] = useState(0);
