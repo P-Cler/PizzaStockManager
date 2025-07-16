@@ -35,7 +35,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 	    CorsConfiguration configuration = new CorsConfiguration();
 	    configuration.addAllowedOrigin("http://localhost:5173");
-		configuration.addAllowedOrigin("https://PizzaStockManager.on.render"); 
+	    configuration.addAllowedOrigin("https://pizzastockmanager.onrender.com"); 
 	    configuration.addAllowedMethod("*");
 	    configuration.addAllowedHeader("*");
 	    configuration.setAllowCredentials(true);
@@ -44,6 +44,7 @@ public class SecurityConfig {
 	    source.registerCorsConfiguration("/**", configuration);
 	    return source;
 	}
+
 	
 	@Bean
     public PasswordEncoder passwordEncoder() {
