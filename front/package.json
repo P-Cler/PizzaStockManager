@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && echo '--- INÍCIO DO CONTEÚDO DO INDEX.HTML ---' && cat dist/index.html && echo '--- FIM DO CONTEÚDO DO INDEX.HTML ---'",
     "lint": "eslint .",
     "preview": "vite preview"
   },
