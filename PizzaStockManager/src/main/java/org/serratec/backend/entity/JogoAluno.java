@@ -1,7 +1,5 @@
 package org.serratec.backend.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,22 +8,43 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Resultado {
+public class JogoAluno {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "aluno_id")
-    private Aluno aluno;
-
-    @ManyToOne
     @JoinColumn(name = "jogo_id")
     private Jogo jogo;
 
-    private Integer pontuacao;
+    @ManyToOne
+    @JoinColumn(name = "aluno_id")
+    private Aluno aluno;
 
-    private Integer tempoUtilizado;
+	public Long getId() {
+		return id;
+	}
 
-    private LocalDateTime dataFinalizacao;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Jogo getJogo() {
+		return jogo;
+	}
+
+	public void setJogo(Jogo jogo) {
+		this.jogo = jogo;
+	}
+
+	public Aluno getAluno() {
+		return aluno;
+	}
+
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
+	}
+    
+    
+    
 }
