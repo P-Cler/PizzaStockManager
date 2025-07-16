@@ -69,6 +69,8 @@ public class SecurityConfig {
 	    configuration.addAllowedOrigin("http://localhost:5173");
 	    configuration.addAllowedOrigin("https://pizzastockmanager.onrender.com"); 
 	    configuration.addAllowedOrigin("https://pizza-stock-manager.vercel.app"); 
+	    configuration.addAllowedOrigin("https://front-pirata.vercel.app");
+	    configuration.addAllowedOrigin("http://localhost:5174");
 	    configuration.addAllowedMethod("*");
 	    configuration.addAllowedHeader("*");
 	    configuration.setAllowCredentials(true);
