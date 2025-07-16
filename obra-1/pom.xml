@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.serratec.backend</groupId>
-	<artifactId>obra-1</artifactId>
+	<artifactId>pizza</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>obra-1</name>
-	<description>Projeto Final API</description>
+	<name>pizza</name>
+	<description>Projeto Aplicado</description>
 	<url/>
 	<licenses>
 		<license/>
