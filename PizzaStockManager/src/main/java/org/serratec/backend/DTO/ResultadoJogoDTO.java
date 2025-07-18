@@ -16,7 +16,7 @@ public class ResultadoJogoDTO {
     private BigDecimal totalEstoqueExcedente;
     private int totalPontosPerdidosFaltaEstoque;
     private int totalPontosPerdidosEstoquePerdido;
-    private int totalEstoquesPerdidos;
+    private BigDecimal totalEstoquesPerdidos;
 
     public ResultadoJogoDTO(ResultadoJogo resultado) {
         this.jogoId = resultado.getJogo().getId();
@@ -72,7 +72,7 @@ public class ResultadoJogoDTO {
 		return totalPontosPerdidosEstoquePerdido;
 	}
 
-	public int getTotalEstoquesPerdidos() {
+	public BigDecimal getTotalEstoquesPerdidos() {
 		return totalEstoquesPerdidos;
 	}
     

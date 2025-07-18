@@ -24,44 +24,44 @@ public class SecurityConfig {
 	 @Autowired
 	    private JwtAuthFilter jwtAuthFilter;
 
-//	 @Bean
-//	 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//	     http
-//	         .csrf(csrf -> csrf.disable())
-//	         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-//	         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//	         .authorizeHttpRequests(auth -> auth
-//	             .requestMatchers(HttpMethod.POST, "/professores").permitAll() 
-//	             .requestMatchers("/auth/login").permitAll()                
-//	             .requestMatchers("/h2-console/**").permitAll()             
-//
-//	             .requestMatchers("/alunos/**").hasRole("PROFESSOR")         
-//	             .requestMatchers("/jogos/**").hasRole("PROFESSOR")          
-//
-//	             .anyRequest().authenticated()
-//	         )
-//	         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//	         
-//	     http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
-//
-//	     return http.build();
-//	 }
+	 @Bean
+	 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	     http
+	         .csrf(csrf -> csrf.disable())
+	         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+	         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	         .authorizeHttpRequests(auth -> auth
+	             .requestMatchers(HttpMethod.POST, "/professores").permitAll() 
+	             .requestMatchers("/auth/login").permitAll()                
+	             .requestMatchers("/h2-console/**").permitAll()             
+
+	             .requestMatchers("/alunos/**").hasRole("PROFESSOR")     
+	             .requestMatchers("/jogos", "/jogos/**").hasRole("PROFESSOR")
+
+	             .anyRequest().authenticated()
+	         )
+	         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+	         
+	     http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
+
+	     return http.build();
+	 }
 	 
 	 //Desenvolvimento
 	 
-	 @Bean
-		public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		    http
-		        .csrf(csrf -> csrf.disable())
-		        .cors() 
-		        .and()
-		        .headers(headers -> headers.frameOptions().disable())
-		        .authorizeHttpRequests(auth -> auth
-		            .requestMatchers("/h2-console/**").permitAll()
-		            .anyRequest().permitAll()
-		        );
-		    return http.build();
-		}
+//	 @Bean
+//		public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//		    http
+//		        .csrf(csrf -> csrf.disable())
+//		        .cors() 
+//		        .and()
+//		        .headers(headers -> headers.frameOptions().disable())
+//		        .authorizeHttpRequests(auth -> auth
+//		            .requestMatchers("/h2-console/**").permitAll()
+//		            .anyRequest().permitAll()
+//		        );
+//		    return http.build();
+//		}
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
@@ -71,9 +71,15 @@ public class SecurityConfig {
 	    configuration.addAllowedOrigin("https://pizza-stock-manager.vercel.app"); 
 	    configuration.addAllowedOrigin("https://front-pirata.vercel.app");
 	    configuration.addAllowedOrigin("http://localhost:5174");
+	    configuration.addAllowedOrigin("http://localhost:3013");
+	    configuration.addAllowedOrigin("${URL_FRONTEND}");
 	    configuration.addAllowedMethod("*");
 	    configuration.addAllowedHeader("*");
 	    configuration.setAllowCredentials(true);
+	    
+	    configuration.addAllowedHeader("Authorization");
+	    configuration.addAllowedHeader("Content-Type");
+	    configuration.addAllowedHeader("*");
 
 	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	    source.registerCorsConfiguration("/**", configuration);

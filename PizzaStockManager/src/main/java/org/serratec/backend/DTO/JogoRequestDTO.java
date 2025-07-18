@@ -11,6 +11,7 @@ public class JogoRequestDTO {
     private int pontosPerdidosPorExcedenteEstoque;
     private int pontosPerdidosPorFaltaEstoque;
     private int pontosPerdidosPorEstoquePerdido;
+    private int totalPontosPerdidosPorEstoquePerdido;
 
     public int getTempoTotal() {
         return tempoTotal;
@@ -82,6 +83,14 @@ public class JogoRequestDTO {
 
 	public void setPontosPerdidosPorEstoquePerdido(int pontosPerdidosPorEstoquePerdido) {
 		this.pontosPerdidosPorEstoquePerdido = pontosPerdidosPorEstoquePerdido;
+	}
+
+	public int getTotalPontosPerdidosPorEstoquePerdido() {
+		return totalPontosPerdidosPorEstoquePerdido;
+	}
+
+	public void setTotalPontosPerdidosPorEstoquePerdido(int totalPontosPerdidosPorEstoquePerdido) {
+		this.totalPontosPerdidosPorEstoquePerdido = totalPontosPerdidosPorEstoquePerdido;
 	}
     
     

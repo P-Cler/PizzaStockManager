@@ -6,6 +6,9 @@ public class EstoqueJogoResponseDTO {
 
     private int quantidadeProduzidaTotal;
     private List<EstoqueResponseDTO> itens;
+    
+    private List<IngredienteLimitanteDTO> ingredientesLimitantes;
+
 
     public int getQuantidadeProduzidaTotal() {
         return quantidadeProduzidaTotal;
@@ -22,4 +25,15 @@ public class EstoqueJogoResponseDTO {
     public void setItens(List<EstoqueResponseDTO> itens) {
         this.itens = itens;
     }
+
+	public List<IngredienteLimitanteDTO> getIngredientesLimitantes() {
+		return ingredientesLimitantes;
+	}
+
+	public void setIngredientesLimitantes(List<IngredienteLimitanteDTO> ingredientesLimitantes) {
+		this.ingredientesLimitantes = ingredientesLimitantes;
+	}
+    
+    
+    
 }

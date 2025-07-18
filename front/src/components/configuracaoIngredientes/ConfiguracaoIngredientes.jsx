@@ -13,6 +13,7 @@ const campoIdMap = {
   estoqueMaximo: 3,
   leadTime: 4,
   pontoSeguranca: 5, 
+  validadeEmCiclos: 6
 };
 
 export function ConfiguracaoIngredientes() {
@@ -129,12 +130,12 @@ export function ConfiguracaoIngredientes() {
           <thead className={styles.thead}>
             <tr>
               <th>Ingrediente</th>
-              <th>Unid.</th>
               <th>Estoque Atual</th>
               <th>Estoque Mínimo</th>
               <th>Estoque Máximo</th>
               <th>Lead Time</th>
               <th>Ponto de Seg.</th>
+              <th>Validade</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -142,7 +143,6 @@ export function ConfiguracaoIngredientes() {
             {ingredientes.map((ing, index) => (
               <tr key={ing.id}>
                 <td>{ing.nomeIngrediente}</td>
-                <td>{ing.unidadeMedida || ""}</td>
                 <td>
                   <input
                     type="number"
@@ -190,6 +190,16 @@ export function ConfiguracaoIngredientes() {
                     value={ing.pontoPedido}
                     onChange={(e) => handleChange(index, 'pontoSeguranca', e.target.value)}
                     onBlur={(e) => handleBlur(ing.ingredienteId, 'pontoSeguranca', e.target.value)}
+                    className={styles.input}
+                  />
+                </td>
+                <td>
+                   <input
+                    type="number"
+                    name="validade"
+                    value={ing.validadeEmCiclos}
+                    onChange={(e) => handleChange(index, 'validadeEmCiclos', e.target.value)}
+                    onBlur={(e) => handleBlur(ing.ingredienteId, 'validadeEmCiclos', e.target.value)}
                     className={styles.input}
                   />
                 </td>

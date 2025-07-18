@@ -32,6 +32,11 @@ export default function MenuLateralProfessor() {
         minimoPizzas: 20,
         maximoPizzas: 100,
         numeroCiclos: 5,
+        pontosPorPizzaProduzida: 8,
+        pontosPerdidosPorPizzaRejeitada: 2,
+        pontosPerdidosPorExcedenteEstoque: 1,
+        pontosPerdidosPorFaltaEstoque: 2,
+        pontosPerdidosPorEstoquePerdido:  2,
       }),
       });
 

@@ -19,7 +19,7 @@ function ModalPedido({ isOpen, onClose, ingrediente, onFazerPedido }) {
     const ajustarQuantidade = (valor) => {
         setQuantidade((prev) => Math.max(0, prev + valor));
     };
-    
+
     const handleSubmit = () => {
         onFazerPedido(ingrediente.ingredienteId, quantidade);
         onClose();
@@ -57,43 +57,72 @@ function ModalPedido({ isOpen, onClose, ingrediente, onFazerPedido }) {
 
 
 
-export default function EstoqueGamificado({refreshKey, onPedidoRealizado}) {
+export default function EstoqueGamificado({ refreshKey, onPedidoRealizado, cicloAtual }) {
     const { jogoId } = useParams();
     const [ingredientes, setIngredientes] = useState([]);
+    const [ingredientesLimitantes, setIngredientesLimitantes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ingredienteSelecionado, setIngredienteSelecionado] = useState(null);
 
-    const fetchEstoque = useCallback(async () => {
-        if (!jogoId) return;
-        setLoading(true);
-        try {
-            const response = await fetch(`${API_URL}/estoques/por-jogo/${jogoId}`);
-            if (!response.ok) throw new Error('Erro ao buscar o estoque do jogo.');
-            const data = await response.json();
-            setIngredientes(data.itens);
-            console.log(data);
-            
-        } catch (error) {
-            setError(error.message);
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    }, [jogoId]);
+const fetchEstoque = useCallback(async () => {
+    if (!jogoId) return;
+    setLoading(true);
+    try {
+        const response = await fetch(`${API_URL}/estoques/por-jogo/${jogoId}`);
+        if (!response.ok) throw new Error('Erro ao buscar o estoque do jogo.');
+        const data = await response.json();
+        setIngredientes(data.itens);
+        setIngredientesLimitantes(data.ingredientesLimitantes || []); // Salva a lista de limitantes
+        console.log("Dados recebidos:", data);
+
+    } catch (error) {
+        setError(error.message);
+        console.error(error);
+    } finally {
+        setLoading(false);
+    }
+}, [jogoId]);
 
     useEffect(() => {
         fetchEstoque();
     }, [fetchEstoque], refreshKey);
 
+const isIngredienteLimitante = (ingredienteId) => {
+    if (ingredientesLimitantes.length > 0) {
+        // O ingrediente mais limitante é o primeiro da lista, pois ela já vem ordenada do backend
+        return ingredientesLimitantes[0].ingredienteId === ingredienteId;
+    }
+    return false;
+};
+
     const getCorEstoque = (estoqueAtual, estoqueMin) => {
         const percentual = (estoqueAtual / estoqueMin) * 100;
-        if (percentual <= 100) return styles.estoqueCritico; 
-        if (percentual <= 150) return styles.estoqueAlerta; 
+        if (percentual <= 100) return styles.estoqueCritico;
+        if (percentual <= 150) return styles.estoqueAlerta;
         return styles.estoqueNormal;
     };
+
+    function determinarCorDoItem(item, cicloAtual) {
+        const vencimento = item.cicloDeVencimentoMaisProximo;
+
+        if (vencimento === null || vencimento === undefined) {
+            return styles.cinza;
+        }
+
+        const ciclosRestantes = vencimento - cicloAtual;
+
+        if (ciclosRestantes < item.leadTime) {
+            return styles.vermelho;
+        } else if (ciclosRestantes <= item.leadTime) {
+            return styles.amarelo;
+        } else {
+            return styles.verde;
+        }
+    }
+
 
     const abrirModal = (ingrediente) => {
         setIngredienteSelecionado(ingrediente);
@@ -105,38 +134,38 @@ export default function EstoqueGamificado({refreshKey, onPedidoRealizado}) {
         setIngredienteSelecionado(null);
     };
 
-const fazerPedido = async (ingredienteId, quantidade) => {
-    try {
-        const response = await fetch(`${API_URL}/entregas`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                estoqueId: ingredienteSelecionado.id, 
-                quantidade: Number(quantidade)        
-            }),
-        });
+    const fazerPedido = async (ingredienteId, quantidade) => {
+        try {
+            const response = await fetch(`${API_URL}/entregas`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    estoqueId: ingredienteSelecionado.id,
+                    quantidade: Number(quantidade)
+                }),
+            });
 
-        if (!response.ok) {
-            throw new Error('Erro ao fazer o pedido de entrega.');
+            if (!response.ok) {
+                throw new Error('Erro ao fazer o pedido de entrega.');
+            }
+
+            const data = await response.json();
+            console.log("Entrega solicitada:", data);
+            alert(`Pedido de ${quantidade} unidades de ${ingredienteSelecionado?.nomeIngrediente} realizado com sucesso!`);
+            fetchEstoque();
+
+            if (onPedidoRealizado) {
+                onPedidoRealizado();
+            }
+
+        } catch (error) {
+            console.error("Erro ao fazer pedido:", error);
+            alert("Erro ao fazer o pedido.");
         }
-
-        const data = await response.json();
-        console.log("Entrega solicitada:", data);
-        alert(`Pedido de ${quantidade} unidades de ${ingredienteSelecionado?.nomeIngrediente} realizado com sucesso!`);
-        fetchEstoque(); 
-
-        if(onPedidoRealizado){
-            onPedidoRealizado();
-        }
-
-    } catch (error) {
-        console.error("Erro ao fazer pedido:", error);
-        alert("Erro ao fazer o pedido.");
-    }
-};
+    };
 
 
-    
+
     const receberPedido = (ingrediente) => {
         alert(`Funcionalidade "Receber" para ${ingrediente.nomeIngrediente} não implementada.`);
     }
@@ -150,7 +179,9 @@ const fazerPedido = async (ingredienteId, quantidade) => {
             <div className={styles.grid}>
                 {ingredientes.map((item) => (
                     <div key={item.id} className={styles.card}>
-                        <h3 className={styles.cardTitle}>{item.nomeIngrediente}</h3>
+                        <h3 className={`${styles.cardTitle} ${isIngredienteLimitante(item.ingredienteId) ? styles.vermelho : ''}`}>
+                            {item.nomeIngrediente}
+                        </h3>
                         <div className={styles.detailsGrid}>
                             <div>Estoque Atual:{" "}
                                 <span className={getCorEstoque(item.estoqueAtual, item.estoqueMinimo)}>
@@ -161,19 +192,25 @@ const fazerPedido = async (ingredienteId, quantidade) => {
                             <div>Estoque Máximo: {item.estoqueMax}</div>
                             <div>Lead Time: {item.leadTime} dia(s)</div>
                             <div>Ponto de Reposição: {item.pontoSeguranca}</div>
+                            <div>Faltam:{" "}
+                                <span className={determinarCorDoItem(item, cicloAtual)}>
+                                    {item.cicloDeVencimentoMaisProximo - cicloAtual} ciclo(s) para vencer
+                                </span>
+                            </div>
+                            <div>Vence no ciclo: {item.cicloDeVencimentoMaisProximo}</div>
                         </div>
                         <div className={styles.cardActions}>
                             <button className={styles.buttonPedir} onClick={() => abrirModal(item)}>
                                 <ShoppingCart size={16} /> Pedir
                             </button>
                             <button className={styles.buttonSecondary} onClick={() => receberPedido(item)}>
-                                <PackageCheck size={16}/> Receber
+                                <PackageCheck size={16} /> Receber
                             </button>
                         </div>
                     </div>
                 ))}
             </div>
-            
+
             <ModalPedido
                 isOpen={isModalOpen}
                 onClose={fecharModal}

@@ -59,15 +59,15 @@ public class EstoqueController {
         return new ResponseEntity<>(estoques, HttpStatus.CREATED);
     }
     
-    @PutMapping("/{idEstoque}")
-    public ResponseEntity<EstoqueResponseDTO> atualizarEstoque(
-            @Valid
-    		@PathVariable Long idEstoque, 
-            @RequestBody EstoqueUpdateRequestDTO updateDTO) {
-        
-        EstoqueResponseDTO estoqueAtualizado = service.atualizarEstoque(idEstoque, updateDTO);
-        return ResponseEntity.ok(estoqueAtualizado);
-    }
+//    @PutMapping("/{idEstoque}")
+//    public ResponseEntity<EstoqueResponseDTO> atualizarEstoque(
+//            @Valid
+//    		@PathVariable Long idEstoque, 
+//            @RequestBody EstoqueUpdateRequestDTO updateDTO) {
+//        
+//        EstoqueResponseDTO estoqueAtualizado = service.atualizarEstoque(idEstoque, updateDTO);
+//        return ResponseEntity.ok(estoqueAtualizado);
+//    }
     
     @PatchMapping("/jogo/{jogoId}/ingrediente/{ingredienteId}/campo/{campoId}")
     public ResponseEntity<EstoqueResponseDTO> atualizarCampoEspecifico(

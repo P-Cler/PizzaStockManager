@@ -11,6 +11,8 @@ public class EstoqueRequestDTO {
     private BigDecimal estoqueMax;
     private int leadTime;
     private BigDecimal pontoPedido;
+    private Integer validadeEmCiclos;
+
 
     public Long getJogoId() {
         return jogoId;
@@ -67,4 +69,13 @@ public class EstoqueRequestDTO {
     public void setPontoPedido(BigDecimal pontoPedido) {
         this.pontoPedido = pontoPedido;
     }
+    
+	public Integer getValidadeEmCiclos() {
+		return validadeEmCiclos;
+	}
+
+	public void setValidadeEmCiclos(Integer validadeEmCiclos) {
+		this.validadeEmCiclos = validadeEmCiclos;
+	}
+    
 }

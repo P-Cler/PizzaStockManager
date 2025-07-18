@@ -1,13 +1,19 @@
 package org.serratec.backend.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -29,10 +35,6 @@ public class EstoqueJogo {
     @NotNull(message = "O ingrediente é obrigatório")
     private Ingrediente ingrediente;
 
-    @NotNull(message = "O estoque atual é obrigatório")
-    @DecimalMin(value = "0.0", inclusive = true, message = "O estoque atual não pode ser negativo")
-    private BigDecimal estoqueAtual;
-
     @NotNull(message = "O estoque mínimo é obrigatório")
     @DecimalMin(value = "0.0", inclusive = true, message = "O estoque mínimo não pode ser negativo")
     private BigDecimal estoqueMinimo;
@@ -49,6 +51,22 @@ public class EstoqueJogo {
     private BigDecimal pontoPedido;
     
     private String unidade;
+    
+    @OneToMany(mappedBy = "estoqueJogo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<LoteEstoque> lotes = new ArrayList<>();
+    
+    private Integer validadeEmCiclos;
+
+    
+    @Transient
+    public BigDecimal getEstoqueAtual() {
+    	if(this.lotes == null) {
+    		return BigDecimal.ZERO;
+    	}
+    	return this.lotes.stream()
+    			.map(LoteEstoque::getQuantidade)
+    			.reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
 	public Long getId() {
 		return id;
@@ -72,14 +90,6 @@ public class EstoqueJogo {
 
 	public void setIngrediente(Ingrediente ingrediente) {
 		this.ingrediente = ingrediente;
-	}
-
-	public BigDecimal getEstoqueAtual() {
-		return estoqueAtual;
-	}
-
-	public void setEstoqueAtual(BigDecimal estoqueAtual) {
-		this.estoqueAtual = estoqueAtual;
 	}
 
 	public BigDecimal getEstoqueMinimo() {
@@ -121,7 +131,21 @@ public class EstoqueJogo {
 	public void setUnidade(String unidade) {
 		this.unidade = unidade;
 	}
+
+	public List<LoteEstoque> getLotes() {
+		return lotes;
+	}
+
+	public void setLotes(List<LoteEstoque> lotes) {
+		this.lotes = lotes;
+	}
     
-    
+	public Integer getValidadeEmCiclos() {
+		return validadeEmCiclos;
+	}
+
+	public void setValidadeEmCiclos(Integer validadeEmCiclos) {
+		this.validadeEmCiclos = validadeEmCiclos;
+	}
     
 }

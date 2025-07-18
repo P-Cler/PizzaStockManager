@@ -172,3 +172,23 @@
 
 .loading, .error { padding: 2rem; text-align: center; font-size: 1.2rem; }
 .error { color: #e74c3c; }
+
+.verde {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.amarelo {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.vermelho {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.cinza {
+    color: #6c757d;
+    font-style: italic;
+}

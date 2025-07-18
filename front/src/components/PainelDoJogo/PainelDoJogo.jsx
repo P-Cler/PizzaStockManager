@@ -141,7 +141,7 @@ export function PainelDoJogo() {
 
       <div className={styles.gameComponents}>
         <PedidosGamificados refreshKey={refreshKey} onCycleEnd={handleCycleEnd} />
-        <EstoqueGamificado refreshKey={refreshKey} onPedidoRealizado={handleCycleEnd} />
+        <EstoqueGamificado refreshKey={refreshKey} onPedidoRealizado={handleCycleEnd} cicloAtual={jogo.cicloAtual} />
         <Fornecedor refreshKey={refreshKey} cicloAtual={jogo.cicloAtual} onPedidoRecebido={handleCycleEnd} />
       </div>
       

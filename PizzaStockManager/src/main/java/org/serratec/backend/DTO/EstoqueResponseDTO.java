@@ -1,7 +1,9 @@
 package org.serratec.backend.DTO;
 
 import java.math.BigDecimal;
+
 import org.serratec.backend.entity.EstoqueJogo;
+import org.serratec.backend.entity.LoteEstoque;
 
 public class EstoqueResponseDTO {
 
@@ -14,6 +16,8 @@ public class EstoqueResponseDTO {
     private BigDecimal estoqueMax;
     private int leadTime;
     private BigDecimal pontoPedido;
+    private int validadeEmCiclos;
+    private Integer cicloDeVencimentoMaisProximo;
     
 
     public EstoqueResponseDTO(EstoqueJogo estoque) {
@@ -23,6 +27,8 @@ public class EstoqueResponseDTO {
         this.estoqueMax = estoque.getEstoqueMax();
         this.leadTime = estoque.getLeadTime();
         this.pontoPedido = estoque.getPontoPedido();
+        this.validadeEmCiclos = estoque.getValidadeEmCiclos();
+
 
         if (estoque.getJogo() != null) {
             this.jogoId = estoque.getJogo().getId();
@@ -31,6 +37,14 @@ public class EstoqueResponseDTO {
             this.ingredienteId = estoque.getIngrediente().getId();
             this.nomeIngrediente = estoque.getIngrediente().getNome();
         }
+        
+        if (estoque.getLotes() != null && !estoque.getLotes().isEmpty()) {
+            this.cicloDeVencimentoMaisProximo = estoque.getLotes().stream()
+                .mapToInt(LoteEstoque::getCicloDeExpiracao)
+                .min()
+                .orElse(0); 
+        }
+        
     }
 
 	public Long getId() {
@@ -104,5 +118,23 @@ public class EstoqueResponseDTO {
 	public void setPontoPedido(BigDecimal pontoPedido) {
 		this.pontoPedido = pontoPedido;
 	}
+
+	public int getValidadeEmCiclos() {
+		return validadeEmCiclos;
+	}
+
+	public void setValidadeEmCiclos(int validadeEmCiclos) {
+		this.validadeEmCiclos = validadeEmCiclos;
+	}
+
+	public Integer getCicloDeVencimentoMaisProximo() {
+		return cicloDeVencimentoMaisProximo;
+	}
+
+	public void setCicloDeVencimentoMaisProximo(Integer cicloDeVencimentoMaisProximo) {
+		this.cicloDeVencimentoMaisProximo = cicloDeVencimentoMaisProximo;
+	}
+	
+	
     
 }

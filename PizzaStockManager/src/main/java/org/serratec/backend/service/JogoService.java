@@ -1,5 +1,6 @@
 package org.serratec.backend.service;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.serratec.backend.DTO.JogoRequestDTO;
 import org.serratec.backend.DTO.JogoResponseDTO;
 import org.serratec.backend.entity.EstoqueJogo;
 import org.serratec.backend.entity.Jogo;
+import org.serratec.backend.entity.LoteEstoque;
 import org.serratec.backend.enums.JogoStatus;
 import org.serratec.backend.enums.StatusPedido;
 import org.serratec.backend.repository.JogoRepository;
@@ -55,6 +57,7 @@ public class JogoService {
         
         jogo.setStatus(JogoStatus.NAO_INICIADO);
         jogo.setTotalCiclosComEstoqueBaixo(0);
+        jogo.setTotalEstoquePerdido(BigDecimal.ZERO);
         
         jogoReceitaService.associar(jogoSalvo.getId(), ID_CALABRESA);
         
@@ -79,22 +82,19 @@ public class JogoService {
         jogoRepository.deleteById(id);
     }
     
+
     @Transactional
     public JogoResponseDTO buscarJogoPorId(Long id) {
         Jogo jogo = jogoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Jogo não encontrado com o ID: " + id));
-
-
+        
         if (jogo.getStatus() != JogoStatus.NAO_INICIADO && jogo.getStatus() != JogoStatus.FINALIZADO) {
-            
             long tempoTotalEmSegundos = (long) jogo.getTempoTotal() * 60;
             long segundosDesdeOInicioReal = Duration.between(jogo.getDataInicio(), LocalDateTime.now()).getSeconds();
 
             if (segundosDesdeOInicioReal >= tempoTotalEmSegundos) {
                 jogo.setStatus(JogoStatus.FINALIZADO);
-                
                 resultadoService.calcularResultados(jogo);
-
                 return new JogoResponseDTO(jogoRepository.save(jogo)); 
             }
 
@@ -104,14 +104,17 @@ public class JogoService {
                 long cicloAtualCalculado = (segundosCorridosCiclo / duracaoCicloEmSegundos) + 1;
                 
                 long pedidosJaCriados = jogo.getPedidos().size();
+                boolean houveAlteracao = false; 
+
                 while (pedidosJaCriados < cicloAtualCalculado && pedidosJaCriados < jogo.getNumeroCiclos()) {
-                	
-                	final long cicloQueTerminou = pedidosJaCriados;
+                    houveAlteracao = true; 
+                    final long cicloQueTerminou = pedidosJaCriados;
 
                     jogo.getPedidos().stream()
                         .filter(p -> p.getCicloGerado() == cicloQueTerminou && p.getStatus() == StatusPedido.PENDENTE)
                         .findFirst()
                         .ifPresent(pedidoARejeitar -> {
+                            System.out.println("Rejeitando pedido do ciclo " + cicloQueTerminou);
                             pedidoARejeitar.setStatus(StatusPedido.REJEITADO);
                         });
 
@@ -119,12 +122,32 @@ public class JogoService {
                         if (itemEstoque.getEstoqueAtual().compareTo(itemEstoque.getEstoqueMinimo()) < 0) {
                             jogo.setTotalCiclosComEstoqueBaixo(jogo.getTotalCiclosComEstoqueBaixo() + 1);
                         }
+                        List<LoteEstoque> lotesExpirados = itemEstoque.getLotes().stream()
+                                .filter(lote -> lote.getCicloDeExpiracao() <= cicloQueTerminou)
+                                .collect(Collectors.toList());
+
+                        if (!lotesExpirados.isEmpty()) {
+                            BigDecimal quantidadePerdidaNesteCiclo = lotesExpirados.stream()
+                                .map(LoteEstoque::getQuantidade)
+                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                            if (jogo.getTotalEstoquePerdido() == null) {
+                                jogo.setTotalEstoquePerdido(BigDecimal.ZERO);
+                            }
+                            jogo.setTotalEstoquePerdido(jogo.getTotalEstoquePerdido().add(quantidadePerdidaNesteCiclo));
+
+                            itemEstoque.getLotes().removeAll(lotesExpirados);
+                        }
                     }
                     
-                    resultadoService.calcularResultados(jogo);
-                	
                     gameLogicService.gerarPedidoParaCiclo(jogo, pedidosJaCriados + 1);
                     pedidosJaCriados++;
+                }
+                
+                if (houveAlteracao) {
+                    System.out.println("Houve alterações, calculando resultados e salvando o jogo...");
+                    resultadoService.calcularResultados(jogo);
+                    jogo = jogoRepository.save(jogo); 
                 }
             }
         }

@@ -1,6 +1,7 @@
 package org.serratec.backend.service;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 import org.serratec.backend.DTO.PedidoResponseDTO;
 import org.serratec.backend.entity.EstoqueJogo;
 import org.serratec.backend.entity.Jogo;
+import org.serratec.backend.entity.LoteEstoque;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.Receita;
 import org.serratec.backend.entity.ReceitaIngrediente;
@@ -71,11 +73,24 @@ public class PedidoService {
         }
         
         for (ReceitaIngrediente ingredienteNecessario : ingredientesDaReceita) {
-            Long idIngrediente = ingredienteNecessario.getIngrediente().getId();
             BigDecimal totalADebitar = ingredienteNecessario.getQuantidade().multiply(new BigDecimal(quantidadePizzas));
+            EstoqueJogo itemEmEstoque = mapaEstoque.get(ingredienteNecessario.getIngrediente().getId());
 
-            EstoqueJogo itemEmEstoque = mapaEstoque.get(idIngrediente);
-            itemEmEstoque.setEstoqueAtual(itemEmEstoque.getEstoqueAtual().subtract(totalADebitar));
+            List<LoteEstoque> lotesOrdenados = itemEmEstoque.getLotes().stream()
+                    .sorted(Comparator.comparing(LoteEstoque::getCicloDeExpiracao))
+                    .collect(Collectors.toList());
+
+            for (LoteEstoque lote : lotesOrdenados) {
+                BigDecimal aDebitarDesteLote = totalADebitar.min(lote.getQuantidade());
+                
+                lote.setQuantidade(lote.getQuantidade().subtract(aDebitarDesteLote));
+                totalADebitar = totalADebitar.subtract(aDebitarDesteLote);
+
+                if (totalADebitar.compareTo(BigDecimal.ZERO) == 0) {
+                    break; 
+                }
+            }
+            itemEmEstoque.getLotes().removeIf(lote -> lote.getQuantidade().compareTo(BigDecimal.ZERO) == 0);
         }
 
         pedido.setStatus(StatusPedido.CONCLUIDO);

@@ -20,10 +20,10 @@ public class ResultadoJogo {
     private int totalPizzasProduzidas;
     private int totalPizzasRejeitadas;
     private int totalEntregasPedidas;
-    private BigDecimal totalEstoqueExcedente;
+    private BigDecimal totalEstoqueExcedente = BigDecimal.ZERO;
     private int totalPontosPerdidosFaltaEstoque;
     private int totalPontosPerdidosEstoquePerdido;
-    private int totalEstoquesPerdidos;
+    private BigDecimal totalEstoquesPerdidos;
     
     
 	public Long getId() {
@@ -89,14 +89,14 @@ public class ResultadoJogo {
 	public int getTotalPontosPerdidosEstoquePerdido() {
 		return totalPontosPerdidosEstoquePerdido;
 	}
-	public void setTotalPontosPerdidosEstoquePerdido(int totalPontosPerdidosEstoquePerdido) {
-		this.totalPontosPerdidosEstoquePerdido = totalPontosPerdidosEstoquePerdido;
+	public void setTotalPontosPerdidosEstoquePerdido(int totalPontosPerdidosEstoquePerdido2) {
+		this.totalPontosPerdidosEstoquePerdido = totalPontosPerdidosEstoquePerdido2;
 	}
-	public int getTotalEstoquesPerdidos() {
+	public BigDecimal getTotalEstoquesPerdidos() {
 		return totalEstoquesPerdidos;
 	}
-	public void setTotalEstoquesPerdidos(int totalEstoquesPerdidos) {
-		this.totalEstoquesPerdidos = totalEstoquesPerdidos;
+	public void setTotalEstoquesPerdidos(BigDecimal totalEstoquePerdido) {
+		this.totalEstoquesPerdidos = totalEstoquePerdido;
 	}
     
     

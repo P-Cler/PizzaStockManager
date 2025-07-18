@@ -1,5 +1,6 @@
 package org.serratec.backend.entity;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,6 +71,8 @@ public class Jogo {
     private int pontosPerdidosPorFaltaEstoque;
     
     private int pontosPerdidosPorEstoquePerdido;
+    
+    private BigDecimal totalEstoquePerdido;
     
     private int totalCiclosComEstoqueBaixo;
 
@@ -265,6 +268,14 @@ public class Jogo {
 
 	public void setTotalCiclosComEstoqueBaixo(int totalCiclosComEstoqueBaixo) {
 		this.totalCiclosComEstoqueBaixo = totalCiclosComEstoqueBaixo;
+	}
+
+	public BigDecimal getTotalEstoquePerdido() {
+		return totalEstoquePerdido;
+	}
+
+	public void setTotalEstoquePerdido(BigDecimal totalEstoquePerdido) {
+		this.totalEstoquePerdido = totalEstoquePerdido;
 	}
 
     

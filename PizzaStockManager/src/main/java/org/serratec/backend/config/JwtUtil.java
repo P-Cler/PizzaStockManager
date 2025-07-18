@@ -49,8 +49,13 @@ public class JwtUtil {
     
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        System.out.println("Token contém username: " + username);
+        System.out.println("Comparando com: " + userDetails.getUsername());
+        System.out.println("Token expirado? " + isTokenExpired(token));
+
+        return (username.equalsIgnoreCase(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
 
     private boolean isTokenExpired(String token) {
         return getClaims(token).getExpiration().before(new Date());

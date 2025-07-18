@@ -11,6 +11,7 @@ import org.serratec.backend.DTO.EntregaResponseDTO;
 import org.serratec.backend.entity.Entrega;
 import org.serratec.backend.entity.EstoqueJogo;
 import org.serratec.backend.entity.Jogo;
+import org.serratec.backend.entity.LoteEstoque;
 import org.serratec.backend.enums.JogoStatus;
 import org.serratec.backend.enums.StatusEntrega;
 import org.serratec.backend.exceptions.ResourceNotFoundException;
@@ -85,7 +86,17 @@ public class EntregaService {
         BigDecimal novoEstoque = estoqueAtual.add(quantidadeRealmenteAdicionada);
         BigDecimal excedente = quantidadeAReceber.subtract(quantidadeRealmenteAdicionada);
 
-        estoqueJogo.setEstoqueAtual(novoEstoque);
+        if (quantidadeRealmenteAdicionada.compareTo(BigDecimal.ZERO) > 0) {
+            LoteEstoque novoLote = new LoteEstoque();
+            int cicloDeEntrada = calcularCicloAtual(estoqueJogo.getJogo());
+
+            novoLote.setEstoqueJogo(estoqueJogo);
+            novoLote.setQuantidade(quantidadeRealmenteAdicionada);
+            novoLote.setCicloDeEntrada(cicloDeEntrada);
+            novoLote.setCicloDeExpiracao(cicloDeEntrada + estoqueJogo.getValidadeEmCiclos());
+            
+            estoqueJogo.getLotes().add(novoLote);
+        }
 
         entrega.setEstoqueAntesDoRecebimento(estoqueAtual);
         entrega.setEstoqueDepoisDoRecebimento(novoEstoque);

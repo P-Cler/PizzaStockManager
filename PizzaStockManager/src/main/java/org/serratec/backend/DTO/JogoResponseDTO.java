@@ -24,6 +24,8 @@ public class JogoResponseDTO {
 
     private List<PedidoResponseDTO> pedidos;
     
+    private List<IngredienteLimitanteDTO> ingredientesLimitantes;
+    
     public JogoResponseDTO(Jogo jogo) {
         this.id = jogo.getId();
         this.tempoTotal = jogo.getTempoTotal();
@@ -164,5 +166,19 @@ public class JogoResponseDTO {
     public void setTempoRestanteTotalSegundos(long tempoRestanteTotalSegundos) {
         this.tempoRestanteTotalSegundos = tempoRestanteTotalSegundos;
     }
+
+
+
+	public List<IngredienteLimitanteDTO> getIngredientesLimitantes() {
+		return ingredientesLimitantes;
+	}
+
+
+
+	public void setIngredientesLimitantes(List<IngredienteLimitanteDTO> ingredientesLimitantes) {
+		this.ingredientesLimitantes = ingredientesLimitantes;
+	}
+    
+    
     
 }

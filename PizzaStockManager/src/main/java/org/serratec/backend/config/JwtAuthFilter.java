@@ -41,33 +41,31 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             try {
                 username = jwtUtil.extractUsername(token);
             } catch (Exception e) {
-                // Lidar com token inválido/expirado, se necessário
                 logger.error("Não foi possível extrair o username do token", e);
             }
         }
 
-        // Se temos um username e o usuário ainda não está autenticado no contexto atual
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             
-            // Carrega o usuário do banco de dados. A entidade Usuario já implementa UserDetails!
             Usuario usuario = this.usuarioRepository.findByEmail(username).orElse(null);
 
-            // Valida o token com base nos dados do usuário encontrado
             if (usuario != null && jwtUtil.isTokenValid(token, usuario)) {
-                
-                // ✅ PONTO CRÍTICO DA CORREÇÃO ✅
-                // Cria o token de autenticação com as permissões REAIS do usuário
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        usuario, // O principal agora é o objeto Usuario completo
-                        null,
-                        usuario.getAuthorities() // <<-- ESSA LINHA CARREGA AS ROLES PARA O SPRING
-                );
-                
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                System.out.println("Token válido para: " + usuario.getEmail());
+                System.out.println("Authorities atribuídas: " + usuario.getAuthorities());
 
-                // Coloca o usuário autenticado no contexto de segurança do Spring
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        usuario,
+                        null,
+                        usuario.getAuthorities()
+                );
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                System.out.println("SecurityContextHolder setado.");
+            } else {
+                System.out.println("Token inválido ou usuário não encontrado para: " + username);
             }
+
         }
 
         filterChain.doFilter(request, response);
