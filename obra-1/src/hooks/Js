@@ -1,0 +1,126 @@
+  import React from 'react';
+
+// PropTypes can be used for prop validation in JavaScript files
+import PropTypes from 'prop-types';
+
+export const AwardsPanel = ({ scores, currentPlayer }) => {
+  const sortedScores = Object.entries(scores).sort(([,a],[,b]) => b - a);
+
+  const getMedal = (index) => {
+    if (index === 0) return '🥇';
+    if (index === 1) return '🥈';
+    if (index === 2) return '🥉';
+    return '';
+  };
+
+  const getPositionTitle = (index) => {
+    if (index === 0) return 'Mestre Pizzaiolo';
+    if (index === 1) return 'Gerente Expert';
+    if (index === 2) return 'Colaborador Destaque';
+    return '';
+  };
+
+  const getPositionStyle = (index, name) => {
+    let baseStyle = 'flex justify-between items-center p-4 rounded-lg transition-all border-2';
+    
+    if (name === currentPlayer) {
+      baseStyle += ' bg-yellow-500/50 border-yellow-400 shadow-lg';
+    } else {
+      baseStyle += ' bg-white/10 border-transparent';
+    }
+
+    // Destaque especial para os 3 primeiros lugares
+    if (index === 0) {
+      baseStyle += ' ring-2 ring-yellow-400 shadow-xl';
+    } else if (index === 1) {
+      baseStyle += ' ring-2 ring-gray-300 shadow-lg';
+    } else if (index === 2) {
+      baseStyle += ' ring-2 ring-orange-400 shadow-lg';
+    }
+
+    return baseStyle;
+  };
+
+  return (
+    <div className="text-white text-center">
+      <h2 className="text-3xl font-bold mb-4">🏆 Prêmios e Conquistas</h2>
+      <p className="text-lg mt-2 mb-6">Ranking dos melhores gerentes!</p>
+      
+      <div className="mt-6">
+        <div className="max-w-lg mx-auto bg-white/10 p-6 rounded-xl shadow-xl">
+          {sortedScores.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-300 text-lg">Nenhuma pontuação registrada.</p>
+              <p className="text-gray-400 text-sm mt-2">Seja o primeiro a pontuar!</p>
+            </div>
+          ) : (
+            <ul className="space-y-4">
+              {sortedScores.map(([name, score], index) => (
+                <li
+                  key={name}
+                  className={getPositionStyle(index, name)}
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-2xl font-bold text-yellow-400 min-w-[3rem] text-left">
+                        {index + 1}º
+                      </span>
+                      {getMedal(index) && (
+                        <span className="text-3xl">
+                          {getMedal(index)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex-1 text-left">
+                      <div className="font-semibold text-lg">
+                        {name}
+                      </div>
+                      {getPositionTitle(index) && (
+                        <div className="text-sm text-gray-300">
+                          {getPositionTitle(index)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xl font-bold text-green-400">
+                      {score}
+                    </div>
+                    <div className="text-xs text-gray-300">
+                      pontos
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        
+        {sortedScores.length > 0 && (
+          <div className="mt-6 bg-white/5 p-4 rounded-lg">
+            <h3 className="text-lg font-bold mb-3 text-yellow-400">🎖️ Títulos de Honra</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+              <div className="flex items-center justify-center space-x-2 p-2 bg-yellow-500/20 rounded">
+                <span className="text-xl">🥇</span>
+                <span>Mestre Pizzaiolo</span>
+              </div>
+              <div className="flex items-center justify-center space-x-2 p-2 bg-gray-500/20 rounded">
+                <span className="text-xl">🥈</span>
+                <span>Gerente Expert</span>
+              </div>
+              <div className="flex items-center justify-center space-x-2 p-2 bg-orange-500/20 rounded">
+                <span className="text-xl">🥉</span>
+                <span>Colaborador Destaque</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+AwardsPanel.propTypes = {
+  scores: PropTypes.object.isRequired,
+  currentPlayer: PropTypes.string.isRequired,
+};
