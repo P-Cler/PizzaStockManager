@@ -37,6 +37,9 @@ public class Aluno {
     @NotBlank
     private String email;
 
+    @Column
+    private Turma turma;
+
     @Column(nullable = false)
     private String senhaHash;
 
